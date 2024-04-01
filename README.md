@@ -52,8 +52,7 @@ docker build -t inventory:latest inventory\
 helm install dse helm\
 ```
 
-To test I everything you can port-forward a service `kubectl port-forward service/inventory-service 8080:8080 -n dse`
-and check the connection via `curl http://localhost:8080/api/inventory/`.
+To test if everything works you can check the service via `curl http://localhost/api/inventory/`.
 
 ## Development
 

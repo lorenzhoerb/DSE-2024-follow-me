@@ -1,0 +1,10 @@
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: inventory-service
+  namespace: {{ .Values.namespace }}
+spec:
+  hostname: "*"
+  prefix: /api/inventory/
+  service: inventory-service.{{ .Values.namespace }}

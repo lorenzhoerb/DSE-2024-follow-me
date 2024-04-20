@@ -1,0 +1,7 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq
+  namespace: dse
+spec:
+  replicas: 3 # Number of nodes in the RabbitMQ cluster

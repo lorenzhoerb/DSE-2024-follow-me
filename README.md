@@ -13,6 +13,7 @@ Follow instructions [here](https://helm.sh/docs/intro/install/).
 ```shell
 helm repo add datawire https://app.getambassador.io
 helm repo add mongodb https://mongodb.github.io/helm-charts
+helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 ```
 
@@ -38,6 +39,12 @@ kubectl -n emissary wait --for condition=available --timeout=90s deploy -lapp.ku
 
 ```shell
 helm install community-operator mongodb/community-operator --namespace dse
+```
+
+### Install RabbitMq operator
+
+```shell
+helm install rabbitmq-operator bitnami/rabbitmq-cluster-operator --namespace dse
 ```
 
 ### Build docker images

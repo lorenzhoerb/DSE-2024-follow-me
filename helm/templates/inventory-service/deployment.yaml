@@ -21,4 +21,6 @@ spec:
         - containerPort: 8080
         envFrom:
           - secretRef:
-              name: inventory-mongodb-inventory-inventory-user
+              name: inventory-mongodb-inventory-inventory-user # Created by mongodb
+          - secretRef:
+              name: rabbitmq-default-user # Created by rabbitmq

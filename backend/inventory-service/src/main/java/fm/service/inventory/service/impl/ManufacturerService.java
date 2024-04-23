@@ -31,16 +31,16 @@ public class ManufacturerService implements IManufacturerService {
                 });
 
         Manufacturer m = Manufacturer.builder()
-                .name(manufacturer.getName())
-                .manufacturerCode(manufacturer.getManufacturerCode())
+                .name(manufacturer.getName().trim())
+                .manufacturerCode(manufacturer.getManufacturerCode().trim().toUpperCase())
                 .build();
 
         manufacturerRepository.save(m);
 
         return ManufacturerDetailsDTO.builder()
                 .id(m.getId())
-                .name(m.getName().trim())
-                .manufacturerCode(m.getManufacturerCode().toUpperCase().trim())
+                .name(m.getName())
+                .manufacturerCode(m.getManufacturerCode())
                 .build();
     }
 

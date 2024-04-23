@@ -31,7 +31,7 @@ public class ModelService implements IModelService {
                 .orElseThrow(() -> new ConflictException("Manufacturer with id: '" + model.getManufacturerId() + "' does not exist."));
 
         Model m = Model.builder()
-                .name(model.getName())
+                .name(model.getName().trim())
                 .manufacturer(manufacturer)
                 .vehicleCount(VEHICLE_COUNT_START)
                 .build();

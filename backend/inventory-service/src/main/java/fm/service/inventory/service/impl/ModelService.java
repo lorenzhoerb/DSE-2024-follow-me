@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ModelService implements IModelService {
+    public static final long VEHICLE_COUNT_START = 1000L;
     private static final Logger LOGGER = LoggerFactory.getLogger(ModelService.class);
     private final ManufacturerRepository manufacturerRepository;
     private final ModelRepository modelRepository;
@@ -32,6 +33,7 @@ public class ModelService implements IModelService {
         Model m = Model.builder()
                 .name(model.getName())
                 .manufacturer(manufacturer)
+                .vehicleCount(VEHICLE_COUNT_START)
                 .build();
 
         modelRepository.save(m);

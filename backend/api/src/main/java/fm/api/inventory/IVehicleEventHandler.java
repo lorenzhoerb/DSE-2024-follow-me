@@ -1,5 +1,7 @@
 package fm.api.inventory;
 
+import fm.api.inventory.dto.VehicleBaseDTO;
+
 /**
  * Represents a handler for events related to vehicles, dispatched via RabbitMQ under the topic "entity.vehicle".
  */

@@ -1,6 +1,10 @@
-package fm.api.inventory;
+package fm.api.inventory.dto;
 
-public class VehicleBaseDTO {
+import fm.api.inventory.VehicleType;
+
+import java.io.Serializable;
+
+public class VehicleBaseDTO implements Serializable {
     private String vin;
     private VehicleType vehicleType;
 
@@ -23,5 +27,13 @@ public class VehicleBaseDTO {
 
     public void setVehicleType(VehicleType vehicleType) {
         this.vehicleType = vehicleType;
+    }
+
+    @Override
+    public String toString() {
+        return "VehicleBaseDTO{" +
+                "vin='" + vin + '\'' +
+                ", vehicleType=" + vehicleType +
+                '}';
     }
 }

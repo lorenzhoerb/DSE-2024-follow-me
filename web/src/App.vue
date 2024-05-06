@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RouterView } from "vue-router";
-import NavHeader from "@/components/NavHeader.vue";
+import { RouterView } from 'vue-router'
+import NavHeader from '@/components/NavHeader.vue'
 </script>
 
 <template>

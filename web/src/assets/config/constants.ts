@@ -1,1 +1,1 @@
-export const APP_NAME: string = "FollowMe";
+export const APP_NAME: string = 'FollowMe'

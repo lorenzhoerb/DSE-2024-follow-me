@@ -10,10 +10,10 @@ const router = createRouter({
       component: DashboardView
     },
     {
-      path: '/vehicles',
-      component: () => import('@/views/VehiclesView.vue'),
+      path: '/inventory',
+      component: () => import('@/views/InventoryView.vue'),
       meta: {
-        title: 'Vehicles'
+        title: 'Inventory'
       }
     }
   ]

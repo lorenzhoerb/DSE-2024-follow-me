@@ -15,7 +15,7 @@ import { RouterLink } from 'vue-router'
         <li
           class="hover:bg-gray-100 transition-colors duration-300 ease-in-out bg-white px-2 py-1 rounded"
         >
-          <RouterLink to="/vehicles" c>Vehicles</RouterLink>
+          <RouterLink to="/inventory" c>Inventory</RouterLink>
         </li>
         <li
           class="hover:bg-gray-100 transition-colors duration-300 ease-in-out bg-white px-2 py-1 rounded"

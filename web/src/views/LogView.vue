@@ -18,7 +18,7 @@ import type { Ref } from 'vue'
 import LogList from '@/components/LogList.vue'
 import { logs } from '@/mock'
 
-const loading: Ref<boolean> = ref(true)
+const loading: Ref<boolean> = ref(false)
 const sortedLogs = computed(() => {
   return logs.sort()
 })

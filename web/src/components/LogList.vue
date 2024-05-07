@@ -1,6 +1,6 @@
 <template>
   <ol>
-    <li v-for="(log, idx) in logs" :key="idx" class="flex gap-4 p-1 log-record">
+    <li v-for="(log, idx) in logs" :key="idx" class="flex gap-4 p-1 log-record text-sm">
       <div class="min-w-60">
         <span class="font-medium text-gray-900 whitespace-nowrap"
           >[{{ log.timestamp.toISOString() }}]</span

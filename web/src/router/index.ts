@@ -15,6 +15,13 @@ const router = createRouter({
       meta: {
         title: 'Inventory'
       }
+    },
+    {
+      path: '/Logs',
+      component: () => import('@/views/LogView.vue'),
+      meta: {
+        title: 'Logs'
+      }
     }
   ]
 })

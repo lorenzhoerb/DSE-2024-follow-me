@@ -6,7 +6,9 @@
       <VehicleListCard :vehicles="vehicles"></VehicleListCard>
     </div>
 
-    <div class="card row-span-2 col-span-2">map</div>
+    <div class="card row-span-2 col-span-2">
+      <MainMap></MainMap>
+    </div>
 
     <div class="col-span-2 w-full h-full flex flex-col">
       <div class="card flex flex-col flex-1">
@@ -26,6 +28,8 @@ import { computed } from 'vue'
 import { vehicles } from '@/mock'
 import VehicleListCard from '@/components/vehicle/VehicleListCard.vue'
 import LogList from '@/components/LogList.vue'
+import MainMap from '@/components/map/MainMap.vue'
+
 import { logs } from '@/mock'
 
 const sortedLogs = computed(() => {

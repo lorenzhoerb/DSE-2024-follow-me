@@ -4,6 +4,9 @@ public class TargetControlDTO {
     private Double targetVelocity;
     private Integer targetLane;
 
+    public TargetControlDTO() {
+    }
+
     public TargetControlDTO(Double targetVelocity, Integer targetLane) {
         this.targetVelocity = targetVelocity;
         this.targetLane = targetLane;

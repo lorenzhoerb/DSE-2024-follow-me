@@ -1,31 +1,28 @@
 package fm.api.datafeeder;
 
 public class VehicleStatusDTO {
-    private boolean isFollowMeModeActive;
+    private String vin;
+    private Boolean followMeModeActive;
     private String pairedVin;
     private TargetControlDTO targetControl;
 
-    public VehicleStatusDTO(boolean isFollowMeModeActive) {
-        this.isFollowMeModeActive = isFollowMeModeActive;
+    public VehicleStatusDTO() {
     }
 
-    public VehicleStatusDTO(boolean isFollowMeModeActive, String pairedVin) {
-        this.isFollowMeModeActive = isFollowMeModeActive;
-        this.pairedVin = pairedVin;
+    public String getVin() {
+        return vin;
     }
 
-    public VehicleStatusDTO(boolean isFollowMeModeActive, String pairedVin, TargetControlDTO targetControl) {
-        this.isFollowMeModeActive = isFollowMeModeActive;
-        this.pairedVin = pairedVin;
-        this.targetControl = targetControl;
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 
-    public boolean isFollowMeModeActive() {
-        return isFollowMeModeActive;
+    public Boolean getFollowMeModeActive() {
+        return followMeModeActive;
     }
 
-    public void setFollowMeModeActive(boolean followMeModeActive) {
-        isFollowMeModeActive = followMeModeActive;
+    public void setFollowMeModeActive(Boolean followMeModeActive) {
+        this.followMeModeActive = followMeModeActive;
     }
 
     public String getPairedVin() {

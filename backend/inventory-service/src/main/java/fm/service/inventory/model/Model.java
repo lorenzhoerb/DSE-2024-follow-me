@@ -20,6 +20,7 @@ public class Model {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Manufacturer manufacturer;
+    @Builder.Default
     @Column(nullable = false)
     private Long vehicleCount = 1L;
 }

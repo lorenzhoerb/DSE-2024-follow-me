@@ -24,6 +24,7 @@ public class Manufacturer {
     private String manufacturerCode;
 
     @OneToMany(mappedBy = "manufacturer")
+    @Builder.Default
     private Collection<Model> models = new ArrayList<>();
 
 }

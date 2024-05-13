@@ -14,10 +14,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { Ref } from 'vue'
 import InventoryTable from '@/components/vehicle/InventoryTable.vue'
-import { vehicles } from '@/mock'
+import { fetchInventory } from '@/services/InventoryService'
 
 const loading: Ref<boolean> = ref(false)
+const vehicles: Ref<any[]> = ref([])
+
+const fetchVehicleData = () => {
+  loading.value = true
+  fetchInventory()
+    .then((vData) => {
+      vehicles.value = vData
+      loading.value = false
+    })
+    .catch((err) => console.log(err))
+}
+
+// Call fetchVehicles when the component is mounted
+onMounted(() => {
+  fetchVehicleData()
+})
 </script>

@@ -24,13 +24,29 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { vehicles } from '@/mock'
+import { computed, ref, onMounted } from 'vue'
+import type { Ref } from 'vue'
 import VehicleListCard from '@/components/vehicle/VehicleListCard.vue'
-import LogList from '@/components/LogList.vue'
 import MainMap from '@/components/map/MainMap.vue'
+import LogList from '@/components/LogList.vue'
+import { fetchInventory } from '@/services/InventoryService'
 
 import { logs } from '@/mock'
+
+const vehicles: Ref<any[]> = ref([])
+
+const fetchVehicleData = () => {
+  fetchInventory()
+    .then((vData) => {
+      vehicles.value = vData
+    })
+    .catch((err) => console.log(err))
+}
+
+// Call fetchVehicles when the component is mounted
+onMounted(() => {
+  fetchVehicleData()
+})
 
 const sortedLogs = computed(() => {
   return logs.sort()

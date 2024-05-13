@@ -1,4 +1,33 @@
-<script setup>
+<template>
+  <div class="w-full h-full">
+    <GoogleMap
+      api-key="AIzaSyDsxhW-nKqat4HnyYSRDkJTP4SZdJoUaKI"
+      style="width: 100%; height: 100%"
+      :center="centerMain"
+      :zoom="15"
+      :styles="mapsStyling"
+      :street-view-control="false"
+      :map-type-control="false"
+    >
+      <Marker :options="{ position: center }" @click="console.log('hello')">
+        <InfoWindow v-model="infowindow">
+          <div id="content">
+            <h6 class="text-md font-semibold">VIN-234-23</h6>
+            <ul>
+              <li>Velocity: 10km/h</li>
+              <li>Lane: 1</li>
+              <li>FollowMe Mode: Active</li>
+              <li>Target Velocity: 200km/h</li>
+              <li>Target Lane: 2</li>
+            </ul>
+          </div>
+        </InfoWindow>
+      </Marker>
+    </GoogleMap>
+  </div>
+</template>
+
+<script setup lang="ts">
 import { GoogleMap, Marker, InfoWindow } from 'vue3-google-map'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { mapsStyling } from '@/assets/mapsStyling'
@@ -15,7 +44,7 @@ const updateMarkerPosition = () => {
 }
 
 // Update marker position every second
-let intervalId
+let intervalId: number
 onMounted(() => {
   intervalId = setInterval(updateMarkerPosition, 1500)
 })
@@ -25,30 +54,3 @@ onBeforeUnmount(() => {
   clearInterval(intervalId)
 })
 </script>
-
-<template>
-  <GoogleMap
-    api-key="AIzaSyDsxhW-nKqat4HnyYSRDkJTP4SZdJoUaKI"
-    style="width: 100%; height: 100%"
-    :center="centerMain"
-    :zoom="15"
-    :styles="mapsStyling"
-    :street-view-control="false"
-    :map-type-control="false"
-  >
-    <Marker :options="{ position: center }" @click="console.log('hello')">
-      <InfoWindow v-model="infowindow">
-        <div id="content">
-          <h6 class="text-md font-semibold">VIN-234-23</h6>
-          <ul>
-            <li>Velocity: 10km/h</li>
-            <li>Lane: 1</li>
-            <li>FollowMe Mode: Active</li>
-            <li>Target Velocity: 200km/h</li>
-            <li>Target Lane: 2</li>
-          </ul>
-        </div>
-      </InfoWindow>
-    </Marker>
-  </GoogleMap>
-</template>

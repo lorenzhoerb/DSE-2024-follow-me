@@ -1,9 +1,11 @@
 package fm.api.inventory.dto;
 
 import fm.api.inventory.VehicleType;
+import lombok.Data;
 
 import java.io.Serializable;
 
+@Data
 public class VehicleBaseDTO implements Serializable {
     private String vin;
     private VehicleType vehicleType;

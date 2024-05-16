@@ -27,10 +27,10 @@ public class BeachcombServiceApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-		VehicleDataDTO vehicle = new VehicleDataDTO("12312312qweqwe",new Location(),12.0,1,
+		VehicleDataDTO vehicle = new VehicleDataDTO("sdfsdfsdfsdf",new Location(),12.0,1,
 				new TargetControlDTO(11.0,2), LocalDateTime.now());
 		producer.sendMessage(vehicle);
 		List<VehicleDataDTO> vehicles = controller.getVehicles();
-		System.out.println(vehicles.get(0).getVin());
+		System.out.println(vehicles.get(1));
     }
 }

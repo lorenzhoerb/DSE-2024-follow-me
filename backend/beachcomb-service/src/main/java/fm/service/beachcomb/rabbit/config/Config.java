@@ -1,5 +1,7 @@
 package fm.service.beachcomb.rabbit.config;
 
+import fm.service.beachcomb.rabbit.consumer.Consumer;
+import fm.service.beachcomb.rabbit.producer.Producer;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -9,24 +11,30 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
+
 @Configuration
 public class Config {
 
-//    @Value("${queue.name}")
-//    private String queue;
     @Value("${exchange.name}")
     private String exchange;
-    @Value("${key.name}")
-    private String key;
-
-//    @Bean
-//    public Queue queue() {
-//        return new Queue(queue);
-//    }
+    @Value("${fromInventory.queue.name}")
+    private String fromInventory;
+    @Value("${fromDatafeeder.queue.name}")
+    private String fromDatafeeder;
+    @Value("${fromInventory.key.name}")
+    private String fromInventoryKey;
+    @Value("${fromDatafeeder.key.name}")
+    private String fromDatafeederKey;
 
     @Bean
-    public AnonymousQueue queue(){
-        return new AnonymousQueue();
+    public Queue queueInventory() {
+        return new Queue(fromInventory);
+    }
+
+    @Bean
+    public Queue queueDatafeeder() {
+        return new Queue(fromDatafeeder);
     }
 
     @Bean
@@ -35,8 +43,13 @@ public class Config {
     }
 
     @Bean
-    public Binding binding() {
-        return BindingBuilder.bind(queue()).to(topicExchange()).with(key);
+    public Binding bindingInventory() {
+        return BindingBuilder.bind(queueInventory()).to(topicExchange()).with(fromInventoryKey);
+    }
+
+    @Bean
+    public Binding bindingDatafeeder() {
+        return BindingBuilder.bind(queueDatafeeder()).to(topicExchange()).with(fromDatafeederKey);
     }
 
     @Bean

@@ -2,11 +2,16 @@ package fm.api.inventory.dto;
 
 import fm.api.inventory.VehicleType;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
+@Document(collection = "Base")
 @Data
 public class VehicleBaseDTO implements Serializable {
+
+    @Id
     private String vin;
     private VehicleType vehicleType;
 

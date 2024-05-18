@@ -39,5 +39,9 @@ public class ControlServiceApplication implements CommandLineRunner {
         for (VehicleStatusDTO status : statusList) {
             System.out.println(status);
         }
+        System.out.println("---------------------");
+        for (VehicleStatusDTO status : statusList) {
+            producer.sendStatus(status.getVin(),status);
+        }
     }
 }

@@ -3,9 +3,16 @@ package fm.service.control.rabbit.producer;
 import fm.api.control.IVehicleService;
 import fm.api.datafeeder.VehicleStatusDTO;
 import fm.api.inventory.dto.VehicleBaseDTO;
+import fm.service.control.rabbit.config.QueueCreator;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.core.MessagePropertiesBuilder;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,14 +20,16 @@ public class Producer implements IVehicleService {
 
     @Value("${exchange.name}")
     private String exchange;
-    @Value("${key.name}")
-    private String key;
+    @Value("${fromInventory.key.name}")
+    private String fromInventoryKey;
 
     @Autowired
     RabbitTemplate rabbitTemplate;
+    @Autowired
+    QueueCreator creator;
 
     public void sendMessage(VehicleBaseDTO status) {
-        rabbitTemplate.convertAndSend(exchange, key, status);
+        rabbitTemplate.convertAndSend(exchange, fromInventoryKey, status);
     }
 
     /**
@@ -36,6 +45,11 @@ public class Producer implements IVehicleService {
      */
     @Override
     public void sendStatus(String vin, VehicleStatusDTO status) {
-
+        creator.createQueueBind(vin);
+        rabbitTemplate.convertAndSend(exchange, vin, status, message -> {
+            message.getMessageProperties().setContentType(MessageProperties.CONTENT_TYPE_JSON);
+            return message;
+        });
     }
+
 }

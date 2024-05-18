@@ -9,6 +9,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class Consumer implements IVehicleEventHandler {
 
@@ -29,5 +31,6 @@ public class Consumer implements IVehicleEventHandler {
         status.setVin(vehicleData.getVin());
         status.setFollowMeModeActive(false);
         controller.saveStatus(status);
+        controller.saveBase(vehicleData);
     }
 }

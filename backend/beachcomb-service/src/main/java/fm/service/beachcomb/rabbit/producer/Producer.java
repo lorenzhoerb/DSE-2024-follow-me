@@ -16,6 +16,8 @@ public class Producer {
     private String fromInventoryKey;
     @Value("${fromDatafeeder.key.name}")
     private String fromDatafeederKey;
+    @Value("${respondInfo.key.name}")
+    private String respondKey;
 
     @Autowired
     RabbitTemplate rabbitTemplate;
@@ -26,5 +28,9 @@ public class Producer {
 
     public void sendMessage(VehicleBaseDTO base) {
         rabbitTemplate.convertAndSend(exchange, fromInventoryKey, base);
+    }
+
+    public void sendRespond(VehicleDataDTO vehicle) {
+        rabbitTemplate.convertAndSend(exchange, respondKey, vehicle);
     }
 }

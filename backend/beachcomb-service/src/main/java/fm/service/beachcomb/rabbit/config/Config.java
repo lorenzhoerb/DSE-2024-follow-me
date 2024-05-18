@@ -22,10 +22,18 @@ public class Config {
     private String fromInventory;
     @Value("${fromDatafeeder.queue.name}")
     private String fromDatafeeder;
+    @Value("${respondInfo.queue.name}")
+    private String respond;
+    @Value("${requestInfo.queue.name}")
+    private String request;
     @Value("${fromInventory.key.name}")
     private String fromInventoryKey;
     @Value("${fromDatafeeder.key.name}")
     private String fromDatafeederKey;
+    @Value("${respondInfo.key.name}")
+    private String respondKey;
+    @Value("${requestInfo.key.name}")
+    private String requestKey;
 
     @Bean
     public Queue queueInventory() {
@@ -35,6 +43,16 @@ public class Config {
     @Bean
     public Queue queueDatafeeder() {
         return new Queue(fromDatafeeder);
+    }
+
+    @Bean
+    public Queue queueRespond() {
+        return new Queue(respond);
+    }
+
+    @Bean
+    public Queue queueRequest(){
+        return new Queue(request);
     }
 
     @Bean
@@ -50,6 +68,16 @@ public class Config {
     @Bean
     public Binding bindingDatafeeder() {
         return BindingBuilder.bind(queueDatafeeder()).to(topicExchange()).with(fromDatafeederKey);
+    }
+
+    @Bean
+    public Binding bindingRespond() {
+        return BindingBuilder.bind(queueRespond()).to(topicExchange()).with(respondKey);
+    }
+
+    @Bean
+    public Binding bindingRequest(){
+        return BindingBuilder.bind(queueRequest()).to(topicExchange()).with(requestKey);
     }
 
     @Bean

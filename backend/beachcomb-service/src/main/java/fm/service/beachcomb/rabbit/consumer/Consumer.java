@@ -5,6 +5,7 @@ import fm.api.datafeeder.VehicleDataDTO;
 import fm.api.inventory.IVehicleEventHandler;
 import fm.api.inventory.dto.VehicleBaseDTO;
 import fm.service.beachcomb.mongo.controller.MongoController;
+import fm.service.beachcomb.rabbit.producer.Producer;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ public class Consumer implements IVehicleDatafeedHandler, IVehicleEventHandler {
 
     @Autowired
     MongoController controller;
+    @Autowired
+    Producer producer;
 
     /**
      * Handles real-time vehicle data received via RabbitMQ under the topic "data.beachcomb".
@@ -40,5 +43,11 @@ public class Consumer implements IVehicleDatafeedHandler, IVehicleEventHandler {
     @Override
     public void handleVehicleCreated(VehicleBaseDTO vehicleData) {
         controller.saveBase(vehicleData);
+    }
+
+    @RabbitListener(queues = "${requestInfo.queue.name}")
+    public void getRequest(String vin) {
+        VehicleDataDTO vehicle = controller.findVehicleByVin(vin);
+        producer.sendRespond(vehicle);
     }
 }

@@ -33,4 +33,9 @@ public class Consumer implements IVehicleEventHandler {
         controller.saveStatus(status);
         controller.saveBase(vehicleData);
     }
+
+    @RabbitListener(queues = "${respondInfo.queue.name}")
+    public void getRespond(VehicleDataDTO data) {
+        controller.saveVehicle(data);
+    }
 }

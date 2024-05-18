@@ -22,10 +22,28 @@ public class Config {
     private String fromInventory;
     @Value("${fromInventory.key.name}")
     private String fromInventoryKey;
+    @Value("${requestInfo.queue.name}")
+    private String request;
+    @Value("${requestInfo.key.name}")
+    private String requestKey;
+    @Value("${respondInfo.queue.name}")
+    private String respond;
+    @Value("${respondInfo.key.name}")
+    private String respondKey;
 
     @Bean
     public Queue queueInventory() {
         return new Queue(fromInventory);
+    }
+
+    @Bean
+    public Queue queueRequest() {
+        return new Queue(request);
+    }
+
+    @Bean
+    public Queue queueRespond() {
+        return new Queue(respond);
     }
 
     @Bean
@@ -34,12 +52,22 @@ public class Config {
     }
 
     @Bean
-    public Binding binding() {
+    public Binding bindingInventory() {
         return BindingBuilder.bind(queueInventory()).to(topicExchange()).with(fromInventoryKey);
     }
 
     @Bean
-    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory){
+    public Binding bindingRequest() {
+        return BindingBuilder.bind(queueRequest()).to(topicExchange()).with(requestKey);
+    }
+
+    @Bean
+    public Binding bindingRespond() {
+        return BindingBuilder.bind(queueRespond()).to(topicExchange()).with(respondKey);
+    }
+
+    @Bean
+    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         return container;

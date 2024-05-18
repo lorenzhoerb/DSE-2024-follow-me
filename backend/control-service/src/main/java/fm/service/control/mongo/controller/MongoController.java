@@ -1,9 +1,11 @@
 package fm.service.control.mongo.controller;
 
+import fm.api.datafeeder.VehicleDataDTO;
 import fm.api.datafeeder.VehicleStatusDTO;
 import fm.api.inventory.VehicleType;
 import fm.api.inventory.dto.VehicleBaseDTO;
 import fm.service.control.mongo.repository.VehicleBaseDTORepository;
+import fm.service.control.mongo.repository.VehicleDataDTORepository;
 import fm.service.control.mongo.repository.VehicleStatusDTORepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,23 @@ public class MongoController {
     private VehicleStatusDTORepository statusRepo;
     @Autowired
     private VehicleBaseDTORepository baseRepo;
+    @Autowired
+    private VehicleDataDTORepository dataRepo;
+
+    public void saveVehicle(VehicleDataDTO vehicle) {
+        dataRepo.save(vehicle);
+    }
+
+    public VehicleDataDTO findVehicleByVin(String vin) {
+        Optional<VehicleDataDTO> vehicle = null;
+        int c = 50;
+        do {
+            c--;
+            vehicle = dataRepo.findById(vin);
+        } while (!vehicle.isPresent() && c > 0);
+        if (vehicle.isPresent()) return vehicle.get();
+        return null;
+    }
 
     public List<VehicleStatusDTO> getStatusList() {
         return statusRepo.findAll();

@@ -24,6 +24,7 @@ public class QueueCreator {
     private String fromControl;
 
     public void createQueueBind(String vin) {
+
         Queue queue = new Queue(fromControl + vin);
         admin.declareQueue(queue);
         Binding binding = BindingBuilder.bind(queue).to(exchange).with(vin);

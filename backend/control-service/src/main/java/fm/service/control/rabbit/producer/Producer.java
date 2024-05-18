@@ -22,6 +22,8 @@ public class Producer implements IVehicleService {
     private String exchange;
     @Value("${fromInventory.key.name}")
     private String fromInventoryKey;
+    @Value("${requestInfo.key.name}")
+    private String requestKey;
 
     @Autowired
     RabbitTemplate rabbitTemplate;
@@ -46,10 +48,11 @@ public class Producer implements IVehicleService {
     @Override
     public void sendStatus(String vin, VehicleStatusDTO status) {
         creator.createQueueBind(vin);
-        rabbitTemplate.convertAndSend(exchange, vin, status, message -> {
-            message.getMessageProperties().setContentType(MessageProperties.CONTENT_TYPE_JSON);
-            return message;
-        });
+        rabbitTemplate.convertAndSend(exchange, vin, status);
+    }
+
+    public void sendRequestByVin(String vin){
+        rabbitTemplate.convertAndSend(exchange,requestKey,vin);
     }
 
 }

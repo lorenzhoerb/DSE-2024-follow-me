@@ -7,6 +7,8 @@ import fm.api.inventory.VehicleType;
 import fm.api.inventory.dto.VehicleBaseDTO;
 import fm.service.beachcomb.mongo.controller.MongoController;
 import fm.service.beachcomb.rabbit.producer.Producer;
+import fm.service.beachcomb.rest.FindNearest;
+import fm.service.beachcomb.rest.MatchingRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,10 +21,12 @@ import java.util.List;
 @SpringBootApplication
 public class BeachcombServiceApplication implements CommandLineRunner {
 
-    @Autowired
-    private Producer producer;
-    @Autowired
-    private MongoController controller;
+//    @Autowired
+//    private Producer producer;
+//    @Autowired
+//    private MongoController controller;
+//    @Autowired
+//    FindNearest nearest;
 
     public static void main(String[] args) {
         SpringApplication.run(BeachcombServiceApplication.class, args);
@@ -48,6 +52,5 @@ public class BeachcombServiceApplication implements CommandLineRunner {
 //        for (VehicleBaseDTO v : base) {
 //            System.out.println(v);
 //        }
-
     }
 }

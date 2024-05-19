@@ -29,18 +29,41 @@ public class MongoController {
     }
 
     public VehicleDataDTO findVehicleByVin(String vin) {
-        Optional<VehicleDataDTO> vehicle = null;
+        Optional<VehicleDataDTO> vehicle;
         int c = 50;
         do {
             c--;
             vehicle = dataRepo.findById(vin);
         } while (!vehicle.isPresent() && c > 0);
-        if (vehicle.isPresent()) return vehicle.get();
+        if (vehicle.isPresent()) {
+            delete(vehicle.get());
+            return vehicle.get();
+        }
         return null;
+    }
+
+    public void delete(VehicleDataDTO dataDTO) {
+        dataRepo.delete(dataDTO);
     }
 
     public List<VehicleStatusDTO> getStatusList() {
         return statusRepo.findAll();
+    }
+
+    public List<VehicleStatusDTO> getPaired() {
+        List<VehicleStatusDTO> vehicles = statusRepo.findAll();
+        for (VehicleStatusDTO v : vehicles) {
+            if (v.getPairedVin() == null) vehicles.remove(v);
+        }
+        return vehicles;
+    }
+
+    public List<VehicleStatusDTO> getNotPaired() {
+        List<VehicleStatusDTO> vehicles = statusRepo.findAll();
+        for (VehicleStatusDTO v : vehicles) {
+            if (v.getPairedVin() != null) vehicles.remove(v);
+        }
+        return vehicles;
     }
 
     public void saveStatus(VehicleStatusDTO status) {

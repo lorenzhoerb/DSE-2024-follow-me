@@ -1,24 +1,43 @@
 package fm.service.control;
 
 import fm.api.datafeeder.VehicleDataDTO;
+import fm.api.inventory.VehicleType;
+import fm.api.inventory.dto.VehicleBaseDTO;
+import fm.service.control.Service.PairedProcessing;
+import fm.service.control.Service.UnpairedProcessing;
 import fm.service.control.mongo.controller.MongoController;
 import fm.service.control.rabbit.producer.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
 
 @SpringBootApplication
 public class ControlServiceApplication implements CommandLineRunner {
 
-    @Autowired
-    Producer producer;
+//    @Autowired
+//    Producer producer;
+//    @Autowired
+//    RestTemplate rest;
     @Autowired
     MongoController controller;
+    @Autowired
+    PairedProcessing pairedProcessing;
+    @Autowired
+    UnpairedProcessing unpairedProcessing;
 
     public static void main(String[] args) {
         SpringApplication.run(ControlServiceApplication.class, args);
     }
+
+    /**
+     * How often should VehicleStatus be sent? (now sent only after some change is made(paired/unpaired))
+     **/
 
     @Override
     public void run(String... args) throws Exception {
@@ -39,8 +58,21 @@ public class ControlServiceApplication implements CommandLineRunner {
 //            producer.sendStatus(status.getVin(),status);
 //        }
 //        producer.sendStatus(statusList.get(0).getVin(),statusList.get(0));
-        producer.sendRequestByVin("3");
-        VehicleDataDTO  dataDTO = controller.findVehicleByVin("3");
-        System.out.println(dataDTO);
+//        producer.sendRequestByVin("3");
+//        VehicleDataDTO dataDTO = controller.findVehicleByVin("3");
+//        System.out.println(dataDTO);
+
+
+        /**
+         * This is main functionality
+         **/
+//        List<VehicleBaseDTO> base;
+//        do {
+//            base = controller.getBaseList();
+//        } while (base.size() < 4);
+//        while (true) {
+//            pairedProcessing.processing();
+//            unpairedProcessing.processing();
+//        }
     }
 }

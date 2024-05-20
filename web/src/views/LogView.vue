@@ -7,19 +7,35 @@
       </div>
     </div>
     <div v-else class="card">
-      <LogList :logs="sortedLogs" />
+      <LogList :logs="eventLogEntries" v-if="eventLogEntries.length > 0" />
+      <h3 v-else class="text-center font-semibold text-gray-600 text-4xl py-10">No Logs</h3>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { Ref } from 'vue'
 import LogList from '@/components/LogList.vue'
-import { logs } from '@/mock'
+import { fetchEvents } from '@/services/EventLogService';
 
 const loading: Ref<boolean> = ref(false)
-const sortedLogs = computed(() => {
-  return logs.sort()
+const eventLogEntries: Ref<any[]> = ref([])
+
+
+
+const fetchEventLogs = () => {
+  loading.value = true
+  fetchEvents()
+    .then((data) => {
+      eventLogEntries.value = data
+      loading.value = false
+    })
+    .catch((err) => console.log(err))
+}
+
+// Call fetchVehicles when the component is mounted
+onMounted(() => {
+  fetchEventLogs()
 })
 </script>

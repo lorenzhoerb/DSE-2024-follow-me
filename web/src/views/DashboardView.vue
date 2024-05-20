@@ -15,7 +15,7 @@
         <h3 class="font-semibold text-xl mb-2">Logs</h3>
         <div class="w-full flex-1 relative">
           <div class="absolute top-0 bottom-0 w-full overflow-y-scroll">
-            <LogList :logs="sortedLogs" />
+            <LogList :logs="logs" />
           </div>
         </div>
       </div>
@@ -30,10 +30,10 @@ import VehicleListCard from '@/components/vehicle/VehicleListCard.vue'
 import MainMap from '@/components/map/MainMap.vue'
 import LogList from '@/components/LogList.vue'
 import { fetchInventory } from '@/services/InventoryService'
-
-import { logs } from '@/mock'
+import { fetchEvents } from '@/services/EventLogService'
 
 const vehicles: Ref<any[]> = ref([])
+const logs: Ref<any[]> = ref([])
 
 const fetchVehicleData = () => {
   fetchInventory()
@@ -43,12 +43,17 @@ const fetchVehicleData = () => {
     .catch((err) => console.log(err))
 }
 
+const fetchEventLogs = () => {
+  fetchEvents()
+    .then((data) => {
+      logs.value = data
+    })
+    .catch((err) => console.log(err))
+}
+
 // Call fetchVehicles when the component is mounted
 onMounted(() => {
   fetchVehicleData()
-})
-
-const sortedLogs = computed(() => {
-  return logs.sort()
+  fetchEventLogs()
 })
 </script>

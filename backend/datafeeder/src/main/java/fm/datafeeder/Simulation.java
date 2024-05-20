@@ -1,5 +1,6 @@
 package fm.datafeeder;
 
+import fm.api.common.EventMessageDTO;
 import fm.api.datafeeder.VehicleStatusDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,11 +9,14 @@ public class Simulation implements ISimulation {
 
     private static final Logger logger = LoggerFactory.getLogger(Simulation.class);
 
+    private final EventMessageService eventMessageService;
+
     private SimulationSate state;
     private Vehicle leadVehicle;
     private Vehicle followVehicle;
 
-    public Simulation(Vehicle leadVehicle, Vehicle followVehicle) {
+    public Simulation(EventMessageService eventMessageService, Vehicle leadVehicle, Vehicle followVehicle) {
+        this.eventMessageService = eventMessageService;
         this.leadVehicle = leadVehicle;
         this.followVehicle = followVehicle;
         this.leadVehicle.setLeadingVehicle(true);
@@ -91,7 +95,6 @@ public class Simulation implements ISimulation {
         if (targetsMatch()) {
             int oldLane = leadVehicle.getLane();
             int newLane = calculateNewLane(leadVehicle.getLane());
-            leadVehicle.setLane(newLane);
             leadVehicle.setLane(newLane);
             state = SimulationSate.LANE_CHANGE_1;
             logger.info("handleSpeedDec1: Switch state from {} to {}", SimulationSate.SPEED_DEC_1, SimulationSate.LANE_CHANGE_1);

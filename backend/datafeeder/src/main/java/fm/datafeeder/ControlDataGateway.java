@@ -31,12 +31,13 @@ public class ControlDataGateway {
 
     @Scheduled(fixedRate = 2000L)
     public void sendStatus() {
-        logger.info("Sending status for all vehicles");
         List<Vehicle> vehicles = simulationManager.getVehicles();
         for (Vehicle vehicle : vehicles) {
-            logger.info("Sending status for {}", vehicle.getVin());
+            logger.info("Sending status for {}: vel: {}, lane: {}, isLeadingVehicle: {}, followMeMode Active: {}", vehicle.getVin(), vehicle.getVelocity(), vehicle.getLane(), vehicle.isLeadingVehicle(), vehicle.isFollowMeMode());
             update(2, vehicle);
-            dataSenderService.sendData(mapVehicleDataDto(vehicle));
+            var data = mapVehicleDataDto(vehicle);
+            dataSenderService.sendData(data);
+            logger.info("sendStatus({})", data);
         }
     }
 
@@ -45,12 +46,15 @@ public class ControlDataGateway {
         double dxKm = speedKmPerSecond * dtSeconds;
         double newLat = vehicle.getLocation().getLatitude() + (dxKm / 6378) * (180 / Math.PI);
         vehicle.getLocation().setLatitude(newLat);
-        logger.info("updating position. New Position ({},{})", vehicle.getLocation().getLongitude(), vehicle.getLocation().getLatitude());
+        logger.debug("updating position. New Position ({},{})", vehicle.getLocation().getLongitude(), vehicle.getLocation().getLatitude());
     }
 
     private VehicleDataDTO mapVehicleDataDto(Vehicle vehicle) {
 
-        TargetControlDTO targetControlDTO = new TargetControlDTO(vehicle.getTargetVelocity(), vehicle.getTargetLane());
+        TargetControlDTO targetControlDTO = null;
+        if(vehicle.isLeadingVehicle() && vehicle.isFollowMeMode()) {
+            targetControlDTO = new TargetControlDTO(vehicle.getVelocity(), vehicle.getLane());
+        }
 
         return new VehicleDataDTO(
                 vehicle.getVin(),

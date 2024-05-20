@@ -8,6 +8,8 @@ import fm.service.control.mongo.controller.MongoController;
 import fm.service.control.rabbit.producer.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -148,7 +150,7 @@ public class UnpairedProcessing {
     }
 
     private List<VehicleDataDTO> candidates(String vin, VehicleType type) {
-        return restTemplate.getForObject(uriBuilder(vin, type), List.class);
+        return restTemplate.exchange(uriBuilder(vin, type), HttpMethod.GET, null, new ParameterizedTypeReference<List<VehicleDataDTO>>() {}).getBody();
     }
 
 

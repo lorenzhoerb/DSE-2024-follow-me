@@ -3,7 +3,7 @@ package fm.datafeeder;
 import fm.api.datafeeder.Location;
 
 public class Vehicle {
-
+    boolean isLeadingVehicle;
 
     private String vin;
     private double velocity;
@@ -12,6 +12,14 @@ public class Vehicle {
     private int targetLane;
     private boolean followMeMode;
     private Location location;
+
+    public boolean isLeadingVehicle() {
+        return isLeadingVehicle;
+    }
+
+    public void setLeadingVehicle(boolean leadingVehicle) {
+        isLeadingVehicle = leadingVehicle;
+    }
 
     public Location getLocation() {
         return location;

@@ -15,17 +15,21 @@ public class Simulation implements ISimulation {
     public Simulation(Vehicle leadVehicle, Vehicle followVehicle) {
         this.leadVehicle = leadVehicle;
         this.followVehicle = followVehicle;
+        this.leadVehicle.setLeadingVehicle(true);
+        this.followVehicle.setLeadingVehicle(false);
         this.state = SimulationSate.ENGAGEMENT;
     }
 
     @Override
     public synchronized void update(VehicleStatusDTO status) {
-        logger.info("Received control data for {}, Simulation Status: {}", status.getVin(), state);
+        logger.info("Received control data for {}, Simulation Status: {}, Mode: {}, Type: {}", status.getVin(), state, status.isFollowMeModeActive(), getVehicleByVin(status.getVin()).isLeadingVehicle ? "LV" : "FV") ;
+
         Vehicle vehicle = getVehicleByVin(status.getVin());
         if(vehicle == null) return;
 
         updateStatus(vehicle, status);
         if (state != SimulationSate.SPEED_INC_2) {
+            // only for follow vehicle
             updateTargets(vehicle, status);
         }
         switch (state) {
@@ -52,6 +56,7 @@ public class Simulation implements ISimulation {
         if(status.getTargetControl() != null && vehicle.getVin().equals(followVehicle.getVin())) {
             vehicle.setLane(status.getTargetControl().getTargetLane());
             vehicle.setVelocity(status.getTargetControl().getTargetVelocity());
+            logger.info("Received control data for {}, Targets: vel: {}, lane: {}", status.getVin(), status.getTargetControl().getTargetVelocity(), status.getTargetControl().getTargetLane()) ;
         }
     }
 
@@ -86,6 +91,7 @@ public class Simulation implements ISimulation {
         if (targetsMatch()) {
             int oldLane = leadVehicle.getLane();
             int newLane = calculateNewLane(leadVehicle.getLane());
+            leadVehicle.setLane(newLane);
             leadVehicle.setLane(newLane);
             state = SimulationSate.LANE_CHANGE_1;
             logger.info("handleSpeedDec1: Switch state from {} to {}", SimulationSate.SPEED_DEC_1, SimulationSate.LANE_CHANGE_1);

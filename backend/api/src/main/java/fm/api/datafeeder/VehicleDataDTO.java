@@ -74,4 +74,16 @@ public class VehicleDataDTO {
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "VehicleDataDTO{" +
+                "vin='" + vin + '\'' +
+                ", location=" + location +
+                ", velocity=" + velocity +
+                ", lane=" + lane +
+                ", targetControl=" + targetControl +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

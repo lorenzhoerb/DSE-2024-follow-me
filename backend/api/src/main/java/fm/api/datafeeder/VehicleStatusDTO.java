@@ -10,37 +10,37 @@ public class VehicleStatusDTO {
 
     @Id
     private String vin;
-    private boolean isFollowMeModeActive;
+    private boolean followMeModeActive;
     private String pairedVin;
     private TargetControlDTO targetControl;
 
     public VehicleStatusDTO() {
     }
 
-    public VehicleStatusDTO(String vin, boolean isFollowMeModeActive) {
+    public VehicleStatusDTO(String vin, boolean followMeModeActive) {
         this.vin = vin;
-        this.isFollowMeModeActive = isFollowMeModeActive;
+        this.followMeModeActive = followMeModeActive;
     }
 
-    public VehicleStatusDTO(String vin, boolean isFollowMeModeActive, String pairedVin) {
+    public VehicleStatusDTO(String vin, boolean followMeModeActive, String pairedVin) {
         this.vin = vin;
-        this.isFollowMeModeActive = isFollowMeModeActive;
+        this.followMeModeActive = followMeModeActive;
         this.pairedVin = pairedVin;
     }
 
-    public VehicleStatusDTO(String vin, boolean isFollowMeModeActive, String pairedVin, TargetControlDTO targetControl) {
+    public VehicleStatusDTO(String vin, boolean followMeModeActive, String pairedVin, TargetControlDTO targetControl) {
         this.vin = vin;
-        this.isFollowMeModeActive = isFollowMeModeActive;
+        this.followMeModeActive = followMeModeActive;
         this.pairedVin = pairedVin;
         this.targetControl = targetControl;
     }
 
     public boolean isFollowMeModeActive() {
-        return isFollowMeModeActive;
+        return followMeModeActive;
     }
 
     public void setFollowMeModeActive(boolean followMeModeActive) {
-        isFollowMeModeActive = followMeModeActive;
+        this.followMeModeActive = followMeModeActive;
     }
 
     public String getPairedVin() {
@@ -65,5 +65,15 @@ public class VehicleStatusDTO {
 
     public String getVin() {
         return vin;
+    }
+
+    @Override
+    public String toString() {
+        return "VehicleStatusDTO{" +
+                "vin='" + vin + '\'' +
+                ", followMeModeActive=" + followMeModeActive +
+                ", pairedVin='" + pairedVin + '\'' +
+                ", targetControl=" + targetControl +
+                '}';
     }
 }

@@ -31,8 +31,6 @@ public class ControlServiceApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        controller.saveStatus(new VehicleStatusDTO("10",true,null));
-        System.out.println(controller.getPaired());
         /**
          * This is main functionality
          **/

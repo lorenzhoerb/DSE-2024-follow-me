@@ -1,28 +1,46 @@
 package fm.api.datafeeder;
 
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "Status")
+@Data
 public class VehicleStatusDTO {
+
+    @Id
     private String vin;
-    private Boolean followMeModeActive;
+    private boolean isFollowMeModeActive;
     private String pairedVin;
     private TargetControlDTO targetControl;
 
     public VehicleStatusDTO() {
     }
 
-    public String getVin() {
-        return vin;
-    }
-
-    public void setVin(String vin) {
+    public VehicleStatusDTO(String vin, boolean isFollowMeModeActive) {
         this.vin = vin;
+        this.isFollowMeModeActive = isFollowMeModeActive;
     }
 
-    public Boolean getFollowMeModeActive() {
-        return followMeModeActive;
+    public VehicleStatusDTO(String vin, boolean isFollowMeModeActive, String pairedVin) {
+        this.vin = vin;
+        this.isFollowMeModeActive = isFollowMeModeActive;
+        this.pairedVin = pairedVin;
     }
 
-    public void setFollowMeModeActive(Boolean followMeModeActive) {
-        this.followMeModeActive = followMeModeActive;
+    public VehicleStatusDTO(String vin, boolean isFollowMeModeActive, String pairedVin, TargetControlDTO targetControl) {
+        this.vin = vin;
+        this.isFollowMeModeActive = isFollowMeModeActive;
+        this.pairedVin = pairedVin;
+        this.targetControl = targetControl;
+    }
+
+    public boolean isFollowMeModeActive() {
+        return isFollowMeModeActive;
+    }
+
+    public void setFollowMeModeActive(boolean followMeModeActive) {
+        isFollowMeModeActive = followMeModeActive;
     }
 
     public String getPairedVin() {
@@ -39,5 +57,13 @@ public class VehicleStatusDTO {
 
     public void setTargetControl(TargetControlDTO targetControl) {
         this.targetControl = targetControl;
+    }
+
+    public void setVin(String vin) {
+        this.vin = vin;
+    }
+
+    public String getVin() {
+        return vin;
     }
 }

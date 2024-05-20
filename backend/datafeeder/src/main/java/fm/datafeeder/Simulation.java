@@ -41,7 +41,7 @@ public class Simulation implements ISimulation {
     }
 
     private void updateStatus(Vehicle vehicle, VehicleStatusDTO status) {
-        vehicle.setFollowMeMode(status.getFollowMeModeActive());
+        vehicle.setFollowMeMode(status.isFollowMeModeActive());
         if(status.getTargetControl() != null && vehicle.getVin().equals(followVehicle.getVin())) {
             vehicle.setTargetLane(status.getTargetControl().getTargetLane());
             vehicle.setTargetVelocity(status.getTargetControl().getTargetVelocity());

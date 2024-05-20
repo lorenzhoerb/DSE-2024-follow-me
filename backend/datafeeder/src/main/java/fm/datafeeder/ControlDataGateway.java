@@ -1,5 +1,6 @@
 package fm.datafeeder;
 
+import fm.api.datafeeder.TargetControlDTO;
 import fm.api.datafeeder.VehicleDataDTO;
 import fm.api.datafeeder.VehicleStatusDTO;
 import org.slf4j.Logger;
@@ -48,12 +49,15 @@ public class ControlDataGateway {
     }
 
     private VehicleDataDTO mapVehicleDataDto(Vehicle vehicle) {
+
+        TargetControlDTO targetControlDTO = new TargetControlDTO(vehicle.getTargetVelocity(), vehicle.getTargetLane());
+
         return new VehicleDataDTO(
                 vehicle.getVin(),
-                null,
+                vehicle.getLocation(),
                 vehicle.getVelocity(),
                 vehicle.getLane(),
-                null,
+                targetControlDTO,
                 LocalDateTime.now()
         );
     }

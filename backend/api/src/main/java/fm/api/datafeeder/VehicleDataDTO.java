@@ -1,8 +1,18 @@
 package fm.api.datafeeder;
 
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
 
+// GET beachcomb/vehicles
+// GET beachcomb/vehicles/[id]
+@Document(collection = "Vehicle")
+@Data
 public class VehicleDataDTO {
+
+    @Id
     private String vin;
     private Location location;
     private Double velocity;

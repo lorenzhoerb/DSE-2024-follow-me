@@ -38,12 +38,10 @@ public class InventoryServiceApplication implements CommandLineRunner {
         ModelDetailsDTO model = modelService.create(modelRequestDTO);
 
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             VehicleType vehicleType = i % 2 == 0 ? VehicleType.FV : VehicleType.LV;
             VehicleRequestDTO vehicleRequestDTO = new VehicleRequestDTO(vehicleType, model.getId());
             vehicleService.create(vehicleRequestDTO);
         }
-
-
     }
 }

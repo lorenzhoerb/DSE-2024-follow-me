@@ -29,6 +29,7 @@
         <module>inventory-service</module>
         <module>control-service</module>
         <module>beachcomb-service</module>
+        <module>event-service</module>
     </modules>
 
 

@@ -14,9 +14,17 @@ public class RabbitConfig {
     @Value("${rabbit.exchange.vehicle}")
     private String vehicleExchange;
 
+    @Value("${rabbit.exchange.event}")
+    private String eventExchange;
+
     @Bean
     public TopicExchange topicExchange() {
         return new TopicExchange(vehicleExchange);
+    }
+
+    @Bean
+    public TopicExchange eventExchange() {
+        return new TopicExchange(eventExchange);
     }
 
     @Bean

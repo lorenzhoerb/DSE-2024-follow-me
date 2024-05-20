@@ -1,5 +1,6 @@
 package fm.datafeeder;
 
+import fm.api.common.EventMessageDTO;
 import fm.api.datafeeder.VehicleStatusDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,11 +9,14 @@ public class Simulation implements ISimulation {
 
     private static final Logger logger = LoggerFactory.getLogger(Simulation.class);
 
+    private final EventMessageService eventMessageService;
+
     private SimulationSate state;
     private Vehicle leadVehicle;
     private Vehicle followVehicle;
 
-    public Simulation(Vehicle leadVehicle, Vehicle followVehicle) {
+    public Simulation(EventMessageService eventMessageService, Vehicle leadVehicle, Vehicle followVehicle) {
+        this.eventMessageService = eventMessageService;
         this.leadVehicle = leadVehicle;
         this.followVehicle = followVehicle;
         this.state = SimulationSate.ENGAGEMENT;
@@ -20,6 +24,7 @@ public class Simulation implements ISimulation {
 
     @Override
     public synchronized void update(VehicleStatusDTO status) {
+        eventMessageService.sendEvent(new EventMessageDTO("Simulation updated. State is: " + state));
         logger.info("Received control data for {}, Simulation Status: {}", status.getVin(), state);
         Vehicle vehicle = getVehicleByVin(status.getVin());
         if(vehicle == null) return;

@@ -1,18 +1,17 @@
 package fm.service.control;
 
 import fm.api.datafeeder.VehicleDataDTO;
-import fm.api.datafeeder.VehicleStatusDTO;
 import fm.api.inventory.dto.VehicleBaseDTO;
 import fm.service.control.service.PairedProcessing;
 import fm.service.control.service.UnpairedProcessing;
 import fm.service.control.mongo.controller.MongoController;
-import fm.service.control.rabbit.producer.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
@@ -24,6 +23,8 @@ public class ControlServiceApplication implements CommandLineRunner {
     PairedProcessing pairedProcessing;
     @Autowired
     UnpairedProcessing unpairedProcessing;
+    @Value("${vehicles.to.expect}")
+    private int amountOfVehicles;
 
     public static void main(String[] args) {
         SpringApplication.run(ControlServiceApplication.class, args);
@@ -32,15 +33,26 @@ public class ControlServiceApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         /**
-         * This is main functionality
+         * Some checks to begin
          **/
+        controller.freshStart();
         List<VehicleBaseDTO> base;
         do {
             base = controller.getBaseList();
-        } while (base.size() < 2);
+        } while (base.size() < amountOfVehicles);
+        List<VehicleDataDTO> vehicles = new ArrayList<>();
+        do {
+            try {
+                vehicles = unpairedProcessing.allData();
+            } catch (Exception e) {
+            }
+        } while (vehicles.size() < base.size());
+        /**
+         * This is main functionality
+         **/
         while (true) {
             pairedProcessing.processing();
             unpairedProcessing.processing();
         }
-   }
+    }
 }

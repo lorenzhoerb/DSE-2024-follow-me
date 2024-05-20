@@ -1,6 +1,5 @@
 package fm.service.control.rabbit.consumer;
 
-import fm.api.datafeeder.VehicleDataDTO;
 import fm.api.datafeeder.VehicleStatusDTO;
 import fm.api.inventory.IVehicleEventHandler;
 import fm.api.inventory.dto.VehicleBaseDTO;
@@ -28,12 +27,9 @@ public class Consumer implements IVehicleEventHandler {
         VehicleStatusDTO status = new VehicleStatusDTO();
         status.setVin(vehicleData.getVin());
         status.setFollowMeModeActive(false);
+        status.setPairedVin(null);
+        status.setTargetControl(null);
         controller.saveStatus(status);
         controller.saveBase(vehicleData);
-    }
-
-    @RabbitListener(queues = "${respondInfo.queue.name}")
-    public void getRespond(VehicleDataDTO data) {
-        controller.saveVehicle(data);
     }
 }

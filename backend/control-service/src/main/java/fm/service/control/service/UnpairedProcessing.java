@@ -53,7 +53,6 @@ public class UnpairedProcessing {
         }
     }
 
-
     private void processLVs() {
         List<VehicleStatusDTO> vehicles = controller.getNotPaired();
         if (vehicles.isEmpty()) return;
@@ -73,25 +72,25 @@ public class UnpairedProcessing {
     }
 
     private boolean tryMatching(VehicleDataDTO leading, VehicleDataDTO following) {
-        changeStatusPair(leading.getVin(), following.getVin(), leading.getTargetControl());
+        changeStatusPair(leading.getVin(), following.getVin(), new TargetControlDTO(leading.getVelocity(), leading.getLane()));
         return checkTarget(leading.getVin(), following.getVin());
     }
 
     private boolean checkTarget(String lv, String fv) {
         VehicleDataDTO leading = request(lv);
         VehicleDataDTO following = request(fv);
-        TargetControlDTO leadingTarget = leading.getTargetControl();
+        TargetControlDTO leadingTarget = getLeadingTarget(leading);
         if (leadingTarget.getTargetLane() != following.getLane()
                 || leadingTarget.getTargetVelocity() != following.getVelocity()) {
-            int c = 4;
+            int c = 8;
             while (c > 0) {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(250);
                 } catch (InterruptedException e) {
                 }
                 leading = request(lv);
                 following = request(fv);
-                leadingTarget = leading.getTargetControl();
+                leadingTarget = getLeadingTarget(leading);
                 if (leadingTarget.getTargetLane() == following.getLane()
                         && leadingTarget.getTargetVelocity() == following.getVelocity()) {
                     return true;
@@ -101,6 +100,17 @@ public class UnpairedProcessing {
             return false;
         }
         return true;
+    }
+
+    private TargetControlDTO getLeadingTarget(VehicleDataDTO data) {
+        int c = 5;
+        TargetControlDTO target;
+        do {
+            c--;
+            data = request(data.getVin());
+            target = data.getTargetControl();
+        } while (target == null);
+        return target;
     }
 
     private void changeStatusUnpair(String lv, String fv) {
@@ -145,12 +155,24 @@ public class UnpairedProcessing {
                 .toUri();
     }
 
+    private URI uriBuilder() {
+        return UriComponentsBuilder.fromHttpUrl(url + "beachcomb/vehicles").build().toUri();
+    }
+
     private VehicleDataDTO request(String vin) {
         return restTemplate.getForObject(uriBuilder(vin), VehicleDataDTO.class);
     }
 
     private List<VehicleDataDTO> candidates(String vin, VehicleType type) {
-        return restTemplate.exchange(uriBuilder(vin, type), HttpMethod.GET, null, new ParameterizedTypeReference<List<VehicleDataDTO>>() {}).getBody();
+        return restTemplate.exchange(uriBuilder(vin, type), HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<VehicleDataDTO>>() {
+                }).getBody();
+    }
+
+    public List<VehicleDataDTO> allData() {
+        return restTemplate.exchange(uriBuilder(), HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<VehicleDataDTO>>() {
+                }).getBody();
     }
 
 

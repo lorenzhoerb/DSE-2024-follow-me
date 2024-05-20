@@ -5,6 +5,7 @@ import fm.api.datafeeder.VehicleDataDTO;
 import fm.api.inventory.VehicleType;
 import fm.service.beachcomb.mongo.controller.MongoController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class FindNearest {
     @Autowired
     MongoController controller;
     private final double EARTH_RADIUS = 6371;
+    @Value("${range.to.match}")
+    private double matchingRange;
 
     public List<VehicleDataDTO> findMatches(String vin, VehicleType type) {
         List<String> vehicles;
@@ -25,13 +28,14 @@ public class FindNearest {
         for (String v : vehicles) {
             VehicleDataDTO vehicle = controller.findVehicleByVin(v);
             Location loc2 = vehicle.getLocation();
-            if (calculateDistance(loc1.getLatitude(), loc1.getLongitude(), loc2.getLatitude(), loc2.getLongitude()) < 0.2)
+            if (calculateDistance(loc1.getLatitude(), loc1.getLongitude(), loc2.getLatitude(), loc2.getLongitude())
+                    < matchingRange)
                 results.add(vehicle);
         }
         return results;
     }
 
-    private  double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         double lat1Rad = Math.toRadians(lat1);
         double lat2Rad = Math.toRadians(lat2);
         double lon1Rad = Math.toRadians(lon1);

@@ -42,12 +42,6 @@ public class MongoController {
         baseDTORepository.save(base);
     }
 
-    public VehicleBaseDTO findBaseByVin(String vin) {
-        Optional<VehicleBaseDTO> base = baseDTORepository.findById(vin);
-        if (base.isPresent()) return base.get();
-        return null;
-    }
-
     public List<String> getVehiclesByType(VehicleType type) {
         List<VehicleBaseDTO> baseDTOs = getBaseList();
         List<String> vins = new ArrayList<>();
@@ -59,4 +53,8 @@ public class MongoController {
         return vins;
     }
 
+    public void freshStart() {
+        dataDTORepository.deleteAll();
+        baseDTORepository.deleteAll();
+    }
 }

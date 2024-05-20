@@ -53,10 +53,21 @@ public class PairedProcessing {
         return vins;
     }
 
+    private TargetControlDTO getLeadingTarget(VehicleDataDTO data) {
+        int c = 5;
+        TargetControlDTO target;
+        do {
+            c--;
+            data = request(data.getVin());
+            target = data.getTargetControl();
+        } while (target == null);
+        return target;
+    }
+
     private void checkTarget(String lv, String fv) {
         VehicleDataDTO leading = request(lv);
         VehicleDataDTO following = request(fv);
-        TargetControlDTO leadingTarget = leading.getTargetControl();
+        TargetControlDTO leadingTarget = getLeadingTarget(leading);
         if (leadingTarget.getTargetLane() != following.getLane()
                 || leadingTarget.getTargetVelocity() != following.getVelocity()) {
             int c = 4;
@@ -67,7 +78,7 @@ public class PairedProcessing {
                 }
                 leading = request(lv);
                 following = request(fv);
-                leadingTarget = leading.getTargetControl();
+                leadingTarget = getLeadingTarget(leading);
                 if (leadingTarget.getTargetLane() == following.getLane()
                         && leadingTarget.getTargetVelocity() == following.getVelocity()) {
                     return;

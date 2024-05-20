@@ -1,6 +1,5 @@
 package fm.service.beachcomb.rest;
 
-import fm.api.datafeeder.Location;
 import fm.api.datafeeder.VehicleDataDTO;
 import fm.api.inventory.VehicleType;
 import fm.service.beachcomb.mongo.controller.MongoController;

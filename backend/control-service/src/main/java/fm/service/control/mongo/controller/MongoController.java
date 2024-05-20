@@ -1,11 +1,8 @@
 package fm.service.control.mongo.controller;
 
-import fm.api.datafeeder.VehicleDataDTO;
 import fm.api.datafeeder.VehicleStatusDTO;
-import fm.api.inventory.VehicleType;
 import fm.api.inventory.dto.VehicleBaseDTO;
 import fm.service.control.mongo.repository.VehicleBaseDTORepository;
-import fm.service.control.mongo.repository.VehicleDataDTORepository;
 import fm.service.control.mongo.repository.VehicleStatusDTORepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,30 +18,7 @@ public class MongoController {
     private VehicleStatusDTORepository statusRepo;
     @Autowired
     private VehicleBaseDTORepository baseRepo;
-    @Autowired
-    private VehicleDataDTORepository dataRepo;
 
-    public void saveVehicle(VehicleDataDTO vehicle) {
-        dataRepo.save(vehicle);
-    }
-
-    public VehicleDataDTO findVehicleByVin(String vin) {
-        Optional<VehicleDataDTO> vehicle;
-        int c = 50;
-        do {
-            c--;
-            vehicle = dataRepo.findById(vin);
-        } while (!vehicle.isPresent() && c > 0);
-        if (vehicle.isPresent()) {
-            delete(vehicle.get());
-            return vehicle.get();
-        }
-        return null;
-    }
-
-    public void delete(VehicleDataDTO dataDTO) {
-        dataRepo.delete(dataDTO);
-    }
 
     public List<VehicleStatusDTO> getStatusList() {
         return statusRepo.findAll();
@@ -92,26 +66,8 @@ public class MongoController {
         return null;
     }
 
-    public List<String> getVehiclesByType(VehicleType type) {
-        List<VehicleBaseDTO> baseDTOs = getBaseList();
-        List<String> vins = new ArrayList<>();
-        if (!baseDTOs.isEmpty()) {
-            for (VehicleBaseDTO vehicle : baseDTOs) {
-                if (vehicle.getVehicleType() == type) vins.add(vehicle.getVin());
-            }
-        }
-        return vins;
+    public void freshStart() {
+        baseRepo.deleteAll();
+        statusRepo.deleteAll();
     }
-
-    public List<String> getAllVins() {
-        List<VehicleBaseDTO> baseDTOs = getBaseList();
-        List<String> vins = new ArrayList<>();
-        if (!baseDTOs.isEmpty()) {
-            for (VehicleBaseDTO vehicle : baseDTOs) {
-                vins.add(vehicle.getVin());
-            }
-        }
-        return vins;
-    }
-
 }

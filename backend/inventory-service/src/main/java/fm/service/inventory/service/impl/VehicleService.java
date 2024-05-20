@@ -85,6 +85,9 @@ public class VehicleService implements IVehicleService {
                 .vin(vehicle.getVin())
                 .type(vehicle.getType())
                 .modelId(vehicle.getModel().getId())
+                .manufacturer(vehicle.getModel().getManufacturer().getName())
+                .manufacturerCode(vehicle.getModel().getManufacturer().getManufacturerCode())
+                .model(vehicle.getModel().getName())
                 .build();
     }
 

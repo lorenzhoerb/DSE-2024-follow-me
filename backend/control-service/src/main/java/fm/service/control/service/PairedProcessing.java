@@ -7,8 +7,12 @@ import fm.api.inventory.VehicleType;
 import fm.service.control.mongo.controller.MongoController;
 import fm.service.control.rabbit.producer.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +23,10 @@ public class PairedProcessing {
     MongoController controller;
     @Autowired
     Producer producer;
-
-    /**
-     * What is TargetControl for lv and fv after unpairing? (now is null)
-     **/
+    @Autowired
+    RestTemplate restTemplate;
+    @Value("${send.rest.requests.to}")
+    private String url;
 
     public void processing() {
         List<VehicleStatusDTO> vehicles = controller.getPaired();
@@ -50,10 +54,8 @@ public class PairedProcessing {
     }
 
     private void checkTarget(String lv, String fv) {
-        producer.sendRequestByVin(lv);
-        producer.sendRequestByVin(fv);
-        VehicleDataDTO leading = controller.findVehicleByVin(lv);
-        VehicleDataDTO following = controller.findVehicleByVin(fv);
+        VehicleDataDTO leading = request(lv);
+        VehicleDataDTO following = request(fv);
         TargetControlDTO leadingTarget = leading.getTargetControl();
         if (leadingTarget.getTargetLane() != following.getLane()
                 || leadingTarget.getTargetVelocity() != following.getVelocity()) {
@@ -63,10 +65,8 @@ public class PairedProcessing {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                 }
-                producer.sendRequestByVin(lv);
-                producer.sendRequestByVin(fv);
-                leading = controller.findVehicleByVin(lv);
-                following = controller.findVehicleByVin(fv);
+                leading = request(lv);
+                following = request(fv);
                 leadingTarget = leading.getTargetControl();
                 if (leadingTarget.getTargetLane() == following.getLane()
                         && leadingTarget.getTargetVelocity() == following.getVelocity()) {
@@ -91,5 +91,15 @@ public class PairedProcessing {
         fStatus.setTargetControl(null);
         controller.saveStatus(fStatus);
         producer.sendStatus(fv, fStatus);
+    }
+
+    private URI uriBuilder(String vin) {
+        return UriComponentsBuilder.fromHttpUrl(url + "beachcomb/vehicles/{vin}")
+                .buildAndExpand(vin)
+                .toUri();
+    }
+
+    private VehicleDataDTO request(String vin) {
+        return restTemplate.getForObject(uriBuilder(vin), VehicleDataDTO.class);
     }
 }

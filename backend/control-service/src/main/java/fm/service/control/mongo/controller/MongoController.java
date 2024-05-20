@@ -52,18 +52,20 @@ public class MongoController {
 
     public List<VehicleStatusDTO> getPaired() {
         List<VehicleStatusDTO> vehicles = statusRepo.findAll();
+        List<VehicleStatusDTO> vehiclesCopy = new ArrayList<>(vehicles);
         for (VehicleStatusDTO v : vehicles) {
-            if (v.getPairedVin() == null) vehicles.remove(v);
+            if (v.getPairedVin() == null) vehiclesCopy.remove(v);
         }
-        return vehicles;
+        return vehiclesCopy;
     }
 
     public List<VehicleStatusDTO> getNotPaired() {
         List<VehicleStatusDTO> vehicles = statusRepo.findAll();
+        List<VehicleStatusDTO> vehiclesCopy = new ArrayList<>(vehicles);
         for (VehicleStatusDTO v : vehicles) {
-            if (v.getPairedVin() != null) vehicles.remove(v);
+            if (v.getPairedVin() != null) vehiclesCopy.remove(v);
         }
-        return vehicles;
+        return vehiclesCopy;
     }
 
     public void saveStatus(VehicleStatusDTO status) {

@@ -28,9 +28,6 @@ public class UnpairedProcessing {
     @Value("${send.rest.requests.to}")
     private String url;
 
-    /**
-     * What TargetControl should LV have? (now it's always null)
-     **/
     public void processing() {
         processLVs();
         processFVs();
@@ -41,16 +38,14 @@ public class UnpairedProcessing {
         if (vehicles.isEmpty()) return;
         List<String> fvs = getFVs(vehicles);
         if (fvs.isEmpty()) return;
-
         for (String v : fvs) {
-            List<VehicleDataDTO> candidates =
-                    restTemplate.getForObject(uriBuilder(v, controller.findBaseByVin(v).getVehicleType()), List.class);
+            List<VehicleDataDTO> candidates = candidates(v, controller.findBaseByVin(v).getVehicleType());
             if (candidates.isEmpty()) return;
-            producer.sendRequestByVin(v);
-            VehicleDataDTO following = controller.findVehicleByVin(v);
+            VehicleDataDTO following = request(v);
             for (VehicleDataDTO vehicle : candidates) {
                 if (controller.findByVin(vehicle.getVin()).getPairedVin() == null) {
-                    tryMatching(vehicle, following);
+                    if (tryMatching(vehicle, following)) return;
+                    else changeStatusUnpair(vehicle.getVin(), following.getVin());
                 }
             }
         }
@@ -63,30 +58,26 @@ public class UnpairedProcessing {
         List<String> lvs = getLVs(vehicles);
         if (lvs.isEmpty()) return;
         for (String v : lvs) {
-            List<VehicleDataDTO> candidates =
-                    restTemplate.getForObject(uriBuilder(v, controller.findBaseByVin(v).getVehicleType()), List.class);
+            List<VehicleDataDTO> candidates = candidates(v, controller.findBaseByVin(v).getVehicleType());
             if (candidates.isEmpty()) return;
-            producer.sendRequestByVin(v);
-            VehicleDataDTO leading = controller.findVehicleByVin(v);
+            VehicleDataDTO leading = request(v);
             for (VehicleDataDTO vehicle : candidates) {
                 if (controller.findByVin(vehicle.getVin()).getPairedVin() == null) {
-                    tryMatching(leading, vehicle);
+                    if (tryMatching(leading, vehicle)) return;
+                    else changeStatusUnpair(leading.getVin(), vehicle.getVin());
                 }
             }
         }
     }
 
-    private void tryMatching(VehicleDataDTO leading, VehicleDataDTO following) {
+    private boolean tryMatching(VehicleDataDTO leading, VehicleDataDTO following) {
         changeStatusPair(leading.getVin(), following.getVin(), leading.getTargetControl());
-        if (!checkTarget(leading.getVin(), following.getVin()))
-            changeStatusUnpair(leading.getVin(), following.getVin());
+        return checkTarget(leading.getVin(), following.getVin());
     }
 
     private boolean checkTarget(String lv, String fv) {
-        producer.sendRequestByVin(lv);
-        producer.sendRequestByVin(fv);
-        VehicleDataDTO leading = controller.findVehicleByVin(lv);
-        VehicleDataDTO following = controller.findVehicleByVin(fv);
+        VehicleDataDTO leading = request(lv);
+        VehicleDataDTO following = request(fv);
         TargetControlDTO leadingTarget = leading.getTargetControl();
         if (leadingTarget.getTargetLane() != following.getLane()
                 || leadingTarget.getTargetVelocity() != following.getVelocity()) {
@@ -96,10 +87,8 @@ public class UnpairedProcessing {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                 }
-                producer.sendRequestByVin(lv);
-                producer.sendRequestByVin(fv);
-                leading = controller.findVehicleByVin(lv);
-                following = controller.findVehicleByVin(fv);
+                leading = request(lv);
+                following = request(fv);
                 leadingTarget = leading.getTargetControl();
                 if (leadingTarget.getTargetLane() == following.getLane()
                         && leadingTarget.getTargetVelocity() == following.getVelocity()) {
@@ -134,7 +123,7 @@ public class UnpairedProcessing {
         controller.saveStatus(lvStatus);
         producer.sendStatus(lv, lvStatus);
         fvStatus.setFollowMeModeActive(true);
-        fvStatus.setPairedVin(fv);
+        fvStatus.setPairedVin(lv);
         fvStatus.setTargetControl(target);
         controller.saveStatus(fvStatus);
         producer.sendStatus(fv, fvStatus);
@@ -146,6 +135,20 @@ public class UnpairedProcessing {
                 .buildAndExpand(vin)
                 .toUri();
         return uri;
+    }
+
+    private URI uriBuilder(String vin) {
+        return UriComponentsBuilder.fromHttpUrl(url + "beachcomb/vehicles/{vin}")
+                .buildAndExpand(vin)
+                .toUri();
+    }
+
+    private VehicleDataDTO request(String vin) {
+        return restTemplate.getForObject(uriBuilder(vin), VehicleDataDTO.class);
+    }
+
+    private List<VehicleDataDTO> candidates(String vin, VehicleType type) {
+        return restTemplate.getForObject(uriBuilder(vin, type), List.class);
     }
 
 

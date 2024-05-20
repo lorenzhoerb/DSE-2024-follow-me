@@ -1,5 +1,6 @@
 package fm.service.beachcomb.rest;
 
+import fm.api.datafeeder.Location;
 import fm.api.datafeeder.VehicleDataDTO;
 import fm.api.inventory.VehicleType;
 import fm.service.beachcomb.mongo.controller.MongoController;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class MatchingRest {
+public class RestEndpoints {
     @Autowired
     FindNearest nearest;
     @Autowired

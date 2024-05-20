@@ -1,4 +1,4 @@
-package fm.service.control.Service;
+package fm.service.control.service;
 
 import fm.api.datafeeder.TargetControlDTO;
 import fm.api.datafeeder.VehicleDataDTO;

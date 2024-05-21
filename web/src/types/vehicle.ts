@@ -51,3 +51,13 @@ export interface VehicleCardEntry {
   type: VehicleType
   isInFollowMeMode: boolean
 }
+
+export interface VehicleTableEntry {
+  vin: string
+  model: string
+  manufacturer: string
+  manufacturerCode: string
+  type: VehicleType
+  isInFollowMeMode: boolean
+  pairedWith: string | null | undefined
+}

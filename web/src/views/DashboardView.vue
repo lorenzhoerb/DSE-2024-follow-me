@@ -15,7 +15,7 @@
         <h3 class="font-semibold text-xl mb-2">Logs</h3>
         <div class="w-full flex-1 relative">
           <div class="absolute top-0 bottom-0 w-full overflow-y-scroll">
-            <LogList :logs="logs" />
+            <LogListConnected></LogListConnected>
           </div>
         </div>
       </div>
@@ -24,16 +24,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { Ref } from 'vue'
 import VehicleListCard from '@/components/vehicle/VehicleListCard.vue'
 import MainMap from '@/components/map/MainMap.vue'
-import LogList from '@/components/LogList.vue'
+import LogListConnected from '@/components/logs/LogListConnected.vue'
 import { fetchInventory } from '@/services/InventoryService'
-import { fetchEvents } from '@/services/EventLogService'
 
 const vehicles: Ref<any[]> = ref([])
-const logs: Ref<any[]> = ref([])
 
 const fetchVehicleData = () => {
   fetchInventory()
@@ -43,17 +41,8 @@ const fetchVehicleData = () => {
     .catch((err) => console.log(err))
 }
 
-const fetchEventLogs = () => {
-  fetchEvents()
-    .then((data) => {
-      logs.value = data
-    })
-    .catch((err) => console.log(err))
-}
-
 // Call fetchVehicles when the component is mounted
 onMounted(() => {
   fetchVehicleData()
-  fetchEventLogs()
 })
 </script>

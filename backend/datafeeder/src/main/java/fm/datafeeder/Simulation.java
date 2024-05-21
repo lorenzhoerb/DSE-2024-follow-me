@@ -67,6 +67,7 @@ public class Simulation implements ISimulation {
     private void handleSpeedIncrease2() {
         if (!leadVehicle.isInFollowMeMode() && !followVehicle.isFollowMeMode()) {
             state = SimulationSate.DISENGAGED;
+            logSimulationState(SimulationSate.SPEED_INC_2, SimulationSate.DISENGAGED);
         }
     }
 
@@ -77,6 +78,7 @@ public class Simulation implements ISimulation {
             state = SimulationSate.SPEED_INC_2;
             logger.info("handleLaneChane2: Switch state from {} to {}", SimulationSate.LANE_CHANGE_2, SimulationSate.SPEED_INC_2);
             logger.info("Increase velocity of LV by 20km/h. New speed target speed is {}", newDisengageSpeed);
+            logSimulationState(SimulationSate.LANE_CHANGE_2, SimulationSate.SPEED_INC_2);
         }
     }
 
@@ -88,6 +90,7 @@ public class Simulation implements ISimulation {
             state = SimulationSate.LANE_CHANGE_2;
             logger.info("handleLaneChane1: Switch state from {} to {}", SimulationSate.LANE_CHANGE_1, SimulationSate.LANE_CHANGE_2);
             logger.info("Switch lane from {} to {}", oldLane, newLane);
+            logSimulationState(SimulationSate.LANE_CHANGE_1, SimulationSate.LANE_CHANGE_2);
         }
     }
 
@@ -99,6 +102,7 @@ public class Simulation implements ISimulation {
             state = SimulationSate.LANE_CHANGE_1;
             logger.info("handleSpeedDec1: Switch state from {} to {}", SimulationSate.SPEED_DEC_1, SimulationSate.LANE_CHANGE_1);
             logger.info("Switch lane from {} to {}", oldLane, newLane);
+            logSimulationState(SimulationSate.SPEED_DEC_1, SimulationSate.LANE_CHANGE_2);
         }
     }
 
@@ -109,6 +113,7 @@ public class Simulation implements ISimulation {
             state = SimulationSate.SPEED_DEC_1;
             logger.info("handleSpeedInc1: Switch state from {} to {}", SimulationSate.SPEED_INC_1, SimulationSate.SPEED_DEC_1);
             logger.info("Decrease velocity of LV by 20km/h. New speed target speed is {}", newVelocity);
+            logSimulationState(SimulationSate.SPEED_INC_1, SimulationSate.SPEED_DEC_1);
         }
     }
 
@@ -119,6 +124,8 @@ public class Simulation implements ISimulation {
             state = SimulationSate.SPEED_INC_1;
             logger.info("handleEngagement: Switch state from {} to {}", SimulationSate.ENGAGEMENT, SimulationSate.SPEED_INC_1);
             logger.info("Increase velocity of LV by 20km/h. New speed target speed is {}", newVelocity);
+            logSimulationState(SimulationSate.ENGAGEMENT, SimulationSate.SPEED_INC_1);
+
         }
     }
 
@@ -143,5 +150,12 @@ public class Simulation implements ISimulation {
 
     public Vehicle getFollowVehicle() {
         return followVehicle;
+    }
+
+    private void logSimulationState(SimulationSate from, SimulationSate to) {
+        logEvent("Simulation state changed. From " + from + " to " + to + ". New targets: vel: " + leadVehicle.getVelocity() + "km/h, lane: " + leadVehicle.getLane());
+    }
+    private void logEvent(String message) {
+        eventMessageService.sendEvent(new EventMessageDTO(message));
     }
 }

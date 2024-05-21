@@ -37,6 +37,6 @@ public class DatafeederApplication implements CommandLineRunner {
         v2.setLocation(new Location(48.200467, 16.3678796));
         Simulation s = new Simulation(eventMessageService, v2, v1);
         simulationManager.addSimulation(s);
-        eventMessageService.sendEvent(new EventMessageDTO("Simulation for vehicles " + v1.getVin() + " and " + v2.getVin() + "started."));
+        eventMessageService.sendEvent(new EventMessageDTO("Simulation for vehicles " + v1.getVin() + " and " + v2.getVin() + " started."));
     }
 }

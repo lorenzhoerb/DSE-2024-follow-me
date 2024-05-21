@@ -11,9 +11,9 @@ export const fetchEvents = (): Promise<LogInfo[]> => {
       .get('/events')
       .then((response) => {
         const events: LogInfo[] = response.data.map((event: any) => ({
-            ...event,
-            timestamp: new Date(event.timestamp)
-          }))
+          ...event,
+          timestamp: new Date(event.timestamp)
+        }))
         resolve(events)
       })
       .catch((error) => {

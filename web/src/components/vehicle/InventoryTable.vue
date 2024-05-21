@@ -41,7 +41,9 @@
               >Inactive</span
             >
           </td>
-          <td class="px-6 py-4">some vin</td>
+          <td class="px-6 py-4">
+            <span v-if="vehicle.pairedWith">{{ vehicle.pairedWith }}</span>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -49,10 +51,10 @@
 </template>
 
 <script setup lang="ts">
-import type { BasicVehicleInfo } from '@/types'
+import type { VehicleTableEntry } from '@/types'
 import { getVehicleTypeLabel } from '@/utils'
 
 defineProps<{
-  vehicles: BasicVehicleInfo[]
+  vehicles: VehicleTableEntry[]
 }>()
 </script>

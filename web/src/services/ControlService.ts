@@ -1,14 +1,14 @@
-import type { BasicVehicleInfo } from '@/types'
 import axios from 'axios'
+import type { VehicleStatus } from '@/types'
 
 const axiosInv = axios.create({
-  baseURL: 'http://127.0.0.1:4444/inventory'
+  baseURL: 'http://127.0.0.1:4443/control/'
 })
 
-export const fetchInventory = (): Promise<BasicVehicleInfo[]> => {
+export const fetchVehicleStatus = (): Promise<VehicleStatus[]> => {
   return new Promise((resolve, reject) => {
     axiosInv
-      .get('/vehicles')
+      .get('/status')
       .then((response) => {
         resolve(response.data)
       })

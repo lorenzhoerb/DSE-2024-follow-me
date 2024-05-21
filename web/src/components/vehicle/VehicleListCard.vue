@@ -12,9 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import type { BasicVehicleInfo } from '@/types'
+import type { VehicleCardEntry } from '@/types'
 import VehicleListEntry from './VehicleListEntry.vue'
 defineProps<{
-  vehicles: BasicVehicleInfo[]
+  vehicles: VehicleCardEntry[]
 }>()
 </script>

@@ -27,6 +27,10 @@ public class PairedProcessing {
     RestTemplate restTemplate;
     @Value("${send.rest.requests.to}")
     private String url;
+    @Value("${repeat.sleep}")
+    private int repeat;
+    @Value("${sleep.time}")
+    private int sleep;
 
     public void processing() {
         List<VehicleStatusDTO> vehicles = controller.getPaired();
@@ -70,10 +74,10 @@ public class PairedProcessing {
         TargetControlDTO leadingTarget = getLeadingTarget(leading);
         if (leadingTarget.getTargetLane() != following.getLane()
                 || leadingTarget.getTargetVelocity() != following.getVelocity()) {
-            int c = 4;
+            int c = repeat;
             while (c > 0) {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(sleep);
                 } catch (InterruptedException e) {
                 }
                 leading = request(lv);

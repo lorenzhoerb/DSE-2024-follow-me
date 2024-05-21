@@ -29,6 +29,10 @@ public class UnpairedProcessing {
     RestTemplate restTemplate;
     @Value("${send.rest.requests.to}")
     private String url;
+    @Value("${repeat.sleep}")
+    private int repeat;
+    @Value("${sleep.time}")
+    private int sleep;
 
     public void processing() {
         processLVs();
@@ -82,10 +86,10 @@ public class UnpairedProcessing {
         TargetControlDTO leadingTarget = getLeadingTarget(leading);
         if (leadingTarget.getTargetLane() != following.getLane()
                 || leadingTarget.getTargetVelocity() != following.getVelocity()) {
-            int c = 8;
+            int c = repeat;
             while (c > 0) {
                 try {
-                    Thread.sleep(250);
+                    Thread.sleep(sleep);
                 } catch (InterruptedException e) {
                 }
                 leading = request(lv);

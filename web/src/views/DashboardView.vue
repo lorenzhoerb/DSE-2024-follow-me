@@ -55,7 +55,7 @@ let intervalId: any = null
 // Call fetchVehicles when the component is mounted
 onMounted(() => {
   fetchAllVehicleData()
-  intervalId = setInterval(fetchAllVehicleData, 250)
+  intervalId = setInterval(fetchAllVehicleData, 1500)
 })
 
 onUnmounted(() => {

@@ -9,16 +9,24 @@
       :street-view-control="false"
       :map-type-control="false"
     >
-      <Marker :options="{ position: center }" @click="console.log('hello')">
+      <Marker
+        :options="{
+          position: { lat: v.data?.location?.latitude, lng: v.data?.location?.longitude }
+        }"
+        v-for="(v, index) in positionVehicles"
+        :key="index"
+      >
         <InfoWindow v-model="infowindow">
           <div id="content">
-            <h6 class="text-md font-semibold">VIN-234-23</h6>
+            <h6 class="text-md font-semibold">{{ v.vin }}</h6>
             <ul>
-              <li>Velocity: 10km/h</li>
-              <li>Lane: 1</li>
-              <li>FollowMe Mode: Active</li>
-              <li>Target Velocity: 200km/h</li>
-              <li>Target Lane: 2</li>
+              <li>Vehicle Type: {{ v.info?.type }}</li>
+              <li>Velocity: {{ v.data?.velocity }}km/h</li>
+              <li>Lane: {{ v.data?.lane }}</li>
+              <li>FollowMe Mode: {{ v.status?.followMeModeActive ? 'Active' : 'Unactive' }}</li>
+              <li>Paired With: {{ v.status?.pairedVin }}</li>
+              <li>Target Velocity: {{ v.data?.targetControl?.targetVelocity }}km/h</li>
+              <li>Target Lane: {{ v.data?.targetControl?.targetLane }}</li>
             </ul>
           </div>
         </InfoWindow>
@@ -31,6 +39,18 @@
 import { GoogleMap, Marker, InfoWindow } from 'vue3-google-map'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { mapsStyling } from '@/assets/mapsStyling'
+import type { VehicleInfo } from '@/types'
+import { computed } from 'vue'
+
+const props = defineProps<{
+  vehicles: VehicleInfo[]
+}>()
+
+const positionVehicles = computed(() =>
+  props.vehicles.filter((v) => v.data !== null && v.data !== undefined)
+)
+console.log(props.vehicles)
+
 const centerMain = { lat: 48.1986581, lng: 16.3658877 }
 const center = ref({ lat: 48.1986581, lng: 16.3658877 })
 const infowindow = ref(false) // Will be open when mounted

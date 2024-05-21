@@ -7,7 +7,7 @@
     </div>
 
     <div class="card row-span-2 col-span-2">
-      <MainMap></MainMap>
+      <MainMap :vehicles="vehicleInfo"></MainMap>
     </div>
 
     <div class="col-span-2 w-full h-full flex flex-col">
@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onUnmounted } from 'vue'
 import type { Ref } from 'vue'
 import VehicleListCard from '@/components/vehicle/VehicleListCard.vue'
 import MainMap from '@/components/map/MainMap.vue'
@@ -50,8 +50,15 @@ const inventory = computed(() =>
     }))
 )
 
+let intervalId: any = null
+
 // Call fetchVehicles when the component is mounted
 onMounted(() => {
   fetchAllVehicleData()
+  intervalId = setInterval(fetchAllVehicleData, 250)
+})
+
+onUnmounted(() => {
+  if (intervalId !== null) clearInterval(intervalId)
 })
 </script>

@@ -29,12 +29,12 @@ public class ControlDataGateway {
         simulationManager.update(statusDTO);
     }
 
-    @Scheduled(fixedRate = 2000L)
+    @Scheduled(fixedRate = 1000)
     public void sendStatus() {
         List<Vehicle> vehicles = simulationManager.getVehicles();
         for (Vehicle vehicle : vehicles) {
             logger.info("Sending status for {}: vel: {}, lane: {}, isLeadingVehicle: {}, followMeMode Active: {}", vehicle.getVin(), vehicle.getVelocity(), vehicle.getLane(), vehicle.isLeadingVehicle(), vehicle.isFollowMeMode());
-            update(2, vehicle);
+            update(1, vehicle);
             var data = mapVehicleDataDto(vehicle);
             dataSenderService.sendData(data);
             logger.info("sendStatus({})", data);

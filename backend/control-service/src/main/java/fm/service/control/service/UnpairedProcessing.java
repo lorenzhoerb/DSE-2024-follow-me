@@ -88,6 +88,7 @@ public class UnpairedProcessing {
                 || leadingTarget.getTargetVelocity() != following.getVelocity()) {
             int c = repeat;
             while (c > 0) {
+                updateFVControl(fv, leadingTarget);
                 try {
                     Thread.sleep(sleep);
                 } catch (InterruptedException e) {
@@ -196,5 +197,12 @@ public class UnpairedProcessing {
                 fvs.add(v.getVin());
         }
         return fvs;
+    }
+
+    private void updateFVControl(String fv, TargetControlDTO targetControlDTO) {
+        VehicleStatusDTO statusDTO = controller.findByVin(fv);
+        statusDTO.setTargetControl(targetControlDTO);
+        controller.saveStatus(statusDTO);
+        producer.sendStatus(fv, statusDTO);
     }
 }

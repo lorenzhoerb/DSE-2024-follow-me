@@ -66,8 +66,9 @@ public class Simulation implements ISimulation {
 
     private void handleSpeedIncrease2() {
         if (!leadVehicle.isInFollowMeMode() && !followVehicle.isFollowMeMode()) {
-            state = SimulationSate.DISENGAGED;
-            logSimulationState(SimulationSate.SPEED_INC_2, SimulationSate.DISENGAGED);
+            state = SimulationSate.ENGAGEMENT;
+            logEvent("Unpaired Vehicles: " + leadVehicle.getVin() + " & " + followVehicle.getVin());
+            logSimulationState(SimulationSate.SPEED_INC_2, SimulationSate.ENGAGEMENT);
         }
     }
 

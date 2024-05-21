@@ -20,11 +20,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import BasicBadge from '@/components/BasicBadge.vue'
-import type { BasicVehicleInfo } from '@/types'
+import type { VehicleCardEntry } from '@/types'
 import { getVehicleTypeLabel } from '@/utils'
 
 const props = defineProps<{
-  vehicle: BasicVehicleInfo
+  vehicle: VehicleCardEntry
 }>()
 
 const vehicleType = computed(() => getVehicleTypeLabel(props.vehicle.type))

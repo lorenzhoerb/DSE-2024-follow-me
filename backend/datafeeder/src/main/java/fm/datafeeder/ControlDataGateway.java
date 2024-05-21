@@ -26,6 +26,7 @@ public class ControlDataGateway {
 
     @RabbitListener(queues = "#{controlDataQueue.name}")
     public void receiveData(VehicleStatusDTO statusDTO) {
+        logger.info("receivingData: {}", statusDTO);
         simulationManager.update(statusDTO);
     }
 
@@ -52,7 +53,7 @@ public class ControlDataGateway {
     private VehicleDataDTO mapVehicleDataDto(Vehicle vehicle) {
 
         TargetControlDTO targetControlDTO = null;
-        if(vehicle.isLeadingVehicle() && vehicle.isFollowMeMode()) {
+        if (vehicle.isLeadingVehicle() && vehicle.isFollowMeMode()) {
             targetControlDTO = new TargetControlDTO(vehicle.getVelocity(), vehicle.getLane());
         }
 

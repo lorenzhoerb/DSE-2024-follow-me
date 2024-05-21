@@ -27,4 +27,12 @@ public class TargetControlDTO {
     public void setTargetLane(Integer targetLane) {
         this.targetLane = targetLane;
     }
+
+    @Override
+    public String toString() {
+        return "TargetControlDTO{" +
+                "targetVelocity=" + targetVelocity +
+                ", targetLane=" + targetLane +
+                '}';
+    }
 }

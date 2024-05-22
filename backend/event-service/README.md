@@ -1,13 +1,12 @@
-# Inventory Service
+# Event Service
 
-The Inventory Service manages vehicles and sends the following events as RabbitMQ messages.
-
-## Events
-
-| Event            | Message Body                          | Exchange   | Routing Key              |
-|------------------|---------------------------------------|------------|--------------------------|
-| Vehicle Created  | Vehicle Basic Info (vin, vehicleType) | beachcomb  | event.vehicle.created    |
-
+Event services manages events. 
+- It receives events from the event queue: `event.exchange` with the routing key `event.message.event.message.#`,
+- stores them in the database,
+- forwards them to a websocket
+  - Websocket Endpoint: `/ws`
+  - Websocket Topic: `/topic/events`
+  - 
 ## Environment
 
 The application supports two Maven and Spring profiles: `dev` (development) and `prod` (production).
@@ -19,8 +18,6 @@ For the Maven and Spring Boot profile `dev`, an H2 in-memory database is used.
 ### Production
 
  For the Maven and Spring Boot profile `prod`, a PostgreSQL database is used.
-
-Use the profile `testdata` to generate test data.
 
 ## Running the Application
 
@@ -45,7 +42,7 @@ Use the profile `testdata` to generate test data.
 
 4. Build the Docker image
    Run the following command to build the Docker image:
-   `docker build -t inventory-service:latest .`
+   `docker build -t event-service:latest .`
 
 
 

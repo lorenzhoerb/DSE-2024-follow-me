@@ -1,4 +1,4 @@
-package fm.service.inventory.config;
+package fm.service.event.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

@@ -42,7 +42,7 @@ For the Maven and Spring Boot profile `dev`, an H2 in-memory database is used.
 
 4. Build the Docker image
    Run the following command to build the Docker image:
-   `docker build -t event-service:latest .`
+   `docker build -t dse/event-service:latest .`
 
 
 

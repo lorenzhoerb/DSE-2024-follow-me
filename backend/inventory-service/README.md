@@ -45,7 +45,7 @@ Use the profile `testdata` to generate test data.
 
 4. Build the Docker image
    Run the following command to build the Docker image:
-   `docker build -t inventory-service:latest .`
+   `docker build -t dse/inventory-service:latest .`
 
 
 

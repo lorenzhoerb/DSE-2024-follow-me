@@ -4,29 +4,29 @@ import { fetchInventory } from './InventoryService'
 import type { VehicleInfo } from '@/types'
 
 export const fetchAll = async (): Promise<VehicleInfo[]> => {
-  let vehicleData;
-  let vehicleStatus;
-  let inventory;
+  let vehicleData
+  let vehicleStatus
+  let inventory
 
   try {
-    vehicleData = await fetchVehicleData();
+    vehicleData = await fetchVehicleData()
   } catch (error) {
-    console.error('Error fetching vehicle data:', error);
+    console.error('Error fetching vehicle data:', error)
   }
 
   try {
-    vehicleStatus = await fetchVehicleStatus();
+    vehicleStatus = await fetchVehicleStatus()
   } catch (error) {
-    console.error('Error fetching vehicle status:', error);
+    console.error('Error fetching vehicle status:', error)
   }
 
   try {
-    inventory = await fetchInventory();
+    inventory = await fetchInventory()
   } catch (error) {
-    console.error('Error fetching inventory:', error);
+    console.error('Error fetching inventory:', error)
   }
 
-  const vehicleInfoMap = new Map<string, VehicleInfo>();
+  const vehicleInfoMap = new Map<string, VehicleInfo>()
 
   if (vehicleData) {
     vehicleData.forEach((data) => {
@@ -34,8 +34,8 @@ export const fetchAll = async (): Promise<VehicleInfo[]> => {
         vin: data.vin,
         data,
         ...vehicleInfoMap.get(data.vin)
-      });
-    });
+      })
+    })
   }
 
   if (vehicleStatus) {
@@ -44,8 +44,8 @@ export const fetchAll = async (): Promise<VehicleInfo[]> => {
         vin: status.vin,
         status,
         ...vehicleInfoMap.get(status.vin)
-      });
-    });
+      })
+    })
   }
 
   if (inventory) {
@@ -54,8 +54,8 @@ export const fetchAll = async (): Promise<VehicleInfo[]> => {
         vin: vehicle.vin,
         info: vehicle,
         ...vehicleInfoMap.get(vehicle.vin)
-      });
-    });
+      })
+    })
   }
   return Array.from(vehicleInfoMap.values())
 }

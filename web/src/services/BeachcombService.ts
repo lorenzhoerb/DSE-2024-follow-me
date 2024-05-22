@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { VehicleData } from '@/types'
 
 const axiosInv = axios.create({
-  baseURL: 'http://127.0.0.1:4442/beachcomb/'
+  baseURL: import.meta.env.VITE_URL_API_BEACHCOMB
 })
 
 export const fetchVehicleData = (): Promise<VehicleData[]> => {

@@ -2,7 +2,7 @@ import type { BasicVehicleInfo } from '@/types'
 import axios from 'axios'
 
 const axiosInv = axios.create({
-  baseURL: 'http://127.0.0.1:4444/inventory'
+  baseURL: import.meta.env.VITE_URL_API_INVENTORY
 })
 
 export const fetchInventory = (): Promise<BasicVehicleInfo[]> => {

@@ -2,7 +2,7 @@ import type { LogInfo } from '@/types'
 import axios from 'axios'
 
 const axiosInv = axios.create({
-  baseURL: 'http://127.0.0.1:4449/'
+  baseURL: import.meta.env.VITE_URL_API_EVENT
 })
 
 export const fetchEvents = (): Promise<LogInfo[]> => {

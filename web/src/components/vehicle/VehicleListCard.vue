@@ -17,5 +17,4 @@ import VehicleListEntry from './VehicleListEntry.vue'
 defineProps<{
   vehicles: VehicleCardEntry[]
 }>()
-
 </script>

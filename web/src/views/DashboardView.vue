@@ -46,7 +46,7 @@ const inventory = computed(() =>
     .map((v) => ({
       ...v.info,
       isInFollowMeMode: v.status ? v.status.followMeModeActive : false,
-      data: v.data ? {velocity: v.data.velocity, lane: v.data.lane} : null
+      data: v.data ? { velocity: v.data.velocity, lane: v.data.lane } : null
     }))
 )
 

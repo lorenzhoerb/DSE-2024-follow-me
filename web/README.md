@@ -37,3 +37,17 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Deploy
+
+1. `docker build -t dse/web-app:latest .`
+2. Set environment variables for API Endpoints
+
+### Environment Variables
+
+See `.env` file for reference:
+
+- VITE_URL_API_BEACHCOMB=http://127.0.0.1:4442/beachcomb/
+- VITE_URL_API_CONTROL=http://127.0.0.1:4443/control/
+- VITE_URL_API_EVENT=http://127.0.0.1:4449/
+- VITE_URL_API_INVENTORY=http://127.0.0.1:4444/inventory

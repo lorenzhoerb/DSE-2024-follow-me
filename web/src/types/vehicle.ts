@@ -51,7 +51,7 @@ export interface VehicleCardEntry {
   type: VehicleType
   isInFollowMeMode: boolean
   data: {
-    velocity: number,
+    velocity: number
     lane: number
   } | null
 }

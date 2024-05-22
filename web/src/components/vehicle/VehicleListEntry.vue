@@ -14,6 +14,9 @@
       <span>{{ vehicleType }}</span> • <span>{{ vehicle.manufacturer }}</span> •
       <span>{{ vehicle.model }}</span>
     </p>
+    <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700" v-if="vehicle.data">
+      <span>Velocity: {{ vehicle.data.velocity }} km/h</span> • <span>Lane: {{ vehicle.data.lane }}</span>
+    </p>
   </div>
 </template>
 

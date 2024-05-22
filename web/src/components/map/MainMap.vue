@@ -49,7 +49,6 @@ const props = defineProps<{
 const positionVehicles = computed(() =>
   props.vehicles.filter((v) => v.data !== null && v.data !== undefined)
 )
-console.log(props.vehicles)
 
 const centerMain = { lat: 48.1986581, lng: 16.3658877 }
 const center = ref({ lat: 48.1986581, lng: 16.3658877 })

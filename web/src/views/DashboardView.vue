@@ -37,7 +37,6 @@ const vehicleInfo: Ref<VehicleInfo[]> = ref([])
 const fetchAllVehicleData = () => {
   fetchAll().then((data) => {
     vehicleInfo.value = data
-    console.log(data)
   })
 }
 
@@ -46,7 +45,8 @@ const inventory = computed(() =>
     .filter((v) => v.info !== null && v.info !== undefined)
     .map((v) => ({
       ...v.info,
-      isInFollowMeMode: v.status ? v.status.followMeModeActive : false
+      isInFollowMeMode: v.status ? v.status.followMeModeActive : false,
+      data: v.data ? {velocity: v.data.velocity, lane: v.data.lane} : null
     }))
 )
 

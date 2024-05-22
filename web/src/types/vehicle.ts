@@ -50,6 +50,10 @@ export interface VehicleCardEntry {
   manufacturerCode: string
   type: VehicleType
   isInFollowMeMode: boolean
+  data: {
+    velocity: number,
+    lane: number
+  } | null
 }
 
 export interface VehicleTableEntry {

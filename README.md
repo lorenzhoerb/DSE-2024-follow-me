@@ -50,7 +50,7 @@ helm install rabbitmq-operator bitnami/rabbitmq-cluster-operator --namespace dse
 ### Build docker images
 
 ```shell
-docker build -t inventory:latest inventory\
+docker build -t europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/inventory:latest inventory
 ```
 
 ### Install helm chart
@@ -69,3 +69,33 @@ Port forward mongodb: `kubectl port-forward inventory-mongodb-0 27017:27017 -n d
 primary' try the other replicas)  
 Set the following env
 variable: `connectionString.standard=mongodb://inventory-user:inventory-pass@localhost:27017/inventory?authSource=inventory`
+
+## Deployment on GKE
+
+```shell
+gcloud container clusters create dse-cluster --num-nodes=3 --machine-type e2-standard-4
+gcloud container clusters get-credentials dse-cluster
+```
+
+Afterward execute the above commands. You can push containers as follows:
+
+```shell
+gcloud artifacts repositories create dse-repo --repository-format docker --location europe-north1
+
+docker push europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/inventory:latest
+```
+
+You can then get the external ip by running:
+
+```shell
+kubectl get svc -n emissary
+```
+
+You can then execute requests: `curl http://<external-ip>/api/inventory/`
+
+### Cleanup
+
+```
+gcloud artifacts repositories delete dse-repo --location europe-north1
+gcloud container clusters delete dse-cluster
+```

@@ -15,5 +15,5 @@ public class VehicleRequestDTO {
     @NotNull(message = "type is required")
     private VehicleType type;
     @NotNull(message = "modelId is required")
-    private Long modelId;
+    private String modelId;
 }

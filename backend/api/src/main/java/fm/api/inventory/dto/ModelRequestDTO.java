@@ -16,5 +16,5 @@ public class ModelRequestDTO {
     @NotBlank(message = "name is required")
     private String name;
     @NotNull(message = "manufacturerId is required")
-    private Long manufacturerId;
+    private String manufacturerId;
 }

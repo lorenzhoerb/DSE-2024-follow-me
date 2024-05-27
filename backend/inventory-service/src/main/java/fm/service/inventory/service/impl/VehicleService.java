@@ -11,7 +11,6 @@ import fm.service.inventory.model.Vehicle;
 import fm.service.inventory.repository.ModelRepository;
 import fm.service.inventory.repository.VehicleRepository;
 import fm.service.inventory.service.IVehicleService;
-import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,6 @@ public class VehicleService implements IVehicleService {
         this.inventoryEventService = inventoryEventService;
     }
 
-    @Transactional
     @Override
     public VehicleDetailsDTO create(VehicleRequestDTO vehicle) {
         LOGGER.info("createVehicle({})", vehicle);

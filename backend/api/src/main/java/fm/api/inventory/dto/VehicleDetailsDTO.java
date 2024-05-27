@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class VehicleDetailsDTO {
     private String vin;
     private VehicleType type;
-    private Long modelId;
+    private String modelId;
     private String manufacturer;
     private String manufacturerCode;
     private String model;

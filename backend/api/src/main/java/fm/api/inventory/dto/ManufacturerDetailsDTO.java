@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ManufacturerDetailsDTO {
-    private Long id;
+    private String id;
     private String name;
     private String manufacturerCode;
 }

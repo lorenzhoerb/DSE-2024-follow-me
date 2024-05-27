@@ -36,7 +36,7 @@ public class ModelService implements IModelService {
                 .vehicleCount(VEHICLE_COUNT_START)
                 .build();
 
-        modelRepository.save(m);
+        m = modelRepository.save(m);
 
         return ModelDetailsDTO.builder()
                 .id(m.getId())

@@ -1,30 +1,29 @@
 package fm.service.inventory.model;
 
 import fm.api.inventory.VehicleType;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+@Document(collection = "vehicles")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
 public class Vehicle {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(unique = true, nullable = false)
+    @Indexed(unique = true)
     private String vin;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private VehicleType type;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
+    @DBRef
     private Model model;
 }

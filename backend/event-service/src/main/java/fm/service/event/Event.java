@@ -1,23 +1,21 @@
 package fm.service.event;
 
 import fm.api.common.LogLevel;
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Document(collection = "events")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
 public class Event {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String message;
-    @Enumerated(EnumType.ORDINAL)
     private LogLevel logLevel;
     private LocalDateTime timestamp;
 }

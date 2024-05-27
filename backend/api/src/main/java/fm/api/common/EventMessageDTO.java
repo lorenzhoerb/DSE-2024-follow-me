@@ -56,4 +56,12 @@ public class EventMessageDTO implements Serializable {
     public void setLogLevel(LogLevel logLevel) {
         this.logLevel = logLevel;
     }
+    @Override
+    public String toString() {
+        return "EventMessageDTO{" +
+                "message='" + message + '\'' +
+                ", logLevel=" + logLevel +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

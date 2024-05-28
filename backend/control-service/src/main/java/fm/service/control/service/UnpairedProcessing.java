@@ -147,21 +147,20 @@ public class UnpairedProcessing {
     }
 
     private URI uriBuilder(String vin, VehicleType type) {
-        URI uri = UriComponentsBuilder.fromHttpUrl(url + "beachcomb/{vin}")
+        return UriComponentsBuilder.fromHttpUrl(url + "/api/beachcomb/{vin}")
                 .queryParam("type", type)
                 .buildAndExpand(vin)
                 .toUri();
-        return uri;
     }
 
     private URI uriBuilder(String vin) {
-        return UriComponentsBuilder.fromHttpUrl(url + "beachcomb/vehicles/{vin}")
+        return UriComponentsBuilder.fromHttpUrl(url + "/api/beachcomb/vehicles/{vin}")
                 .buildAndExpand(vin)
                 .toUri();
     }
 
     private URI uriBuilder() {
-        return UriComponentsBuilder.fromHttpUrl(url + "beachcomb/vehicles").build().toUri();
+        return UriComponentsBuilder.fromHttpUrl(url + "/api/beachcomb/vehicles").build().toUri();
     }
 
     private VehicleDataDTO request(String vin) {

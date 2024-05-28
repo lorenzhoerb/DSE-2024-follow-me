@@ -117,7 +117,7 @@ public class PairedProcessing {
     }
 
     private URI uriBuilder(String vin) {
-        return UriComponentsBuilder.fromHttpUrl(url + "beachcomb/vehicles/{vin}")
+        return UriComponentsBuilder.fromHttpUrl(url + "/api/beachcomb/vehicles/{vin}")
                 .buildAndExpand(vin)
                 .toUri();
     }

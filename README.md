@@ -69,7 +69,7 @@ docker build -t europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/web:latest 
 helm install dse helm\
 ```
 
-To test if everything works you can check the service via `curl http://localhost/inventory/`.
+To test if everything works you can check by visiting `http://localhost/`.
 
 ## Development
 

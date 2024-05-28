@@ -6,11 +6,13 @@ import fm.api.datafeeder.VehicleStatusDTO;
 import fm.api.inventory.VehicleType;
 import fm.service.control.mongo.controller.MongoController;
 import fm.service.control.rabbit.producer.Producer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class UnpairedProcessing {
 
     @Autowired
@@ -50,8 +53,11 @@ public class UnpairedProcessing {
             VehicleDataDTO following = request(v);
             for (VehicleDataDTO vehicle : candidates) {
                 if (controller.findByVin(vehicle.getVin()).getPairedVin() == null) {
-                    if (tryMatching(vehicle, following)) return;
-                    else changeStatusUnpair(vehicle.getVin(), following.getVin());
+                    if (tryMatching(vehicle, following)) {
+                        return;
+                    } else {
+                        changeStatusUnpair(vehicle.getVin(), following.getVin());
+                    }
                 }
             }
         }
@@ -68,15 +74,19 @@ public class UnpairedProcessing {
             VehicleDataDTO leading = request(v);
             for (VehicleDataDTO vehicle : candidates) {
                 if (controller.findByVin(vehicle.getVin()).getPairedVin() == null) {
-                    if (tryMatching(leading, vehicle)) return;
-                    else changeStatusUnpair(leading.getVin(), vehicle.getVin());
+                    if (tryMatching(leading, vehicle)) {
+                        return;
+                    } else {
+                        changeStatusUnpair(leading.getVin(), vehicle.getVin());
+                    }
                 }
             }
         }
     }
 
     private boolean tryMatching(VehicleDataDTO leading, VehicleDataDTO following) {
-        changeStatusPair(leading.getVin(), following.getVin(), new TargetControlDTO(leading.getVelocity(), leading.getLane()));
+        changeStatusPair(leading.getVin(), following.getVin(),
+                new TargetControlDTO(leading.getVelocity(), leading.getLane()));
         return checkTarget(leading.getVin(), following.getVin());
     }
 
@@ -164,27 +174,46 @@ public class UnpairedProcessing {
     }
 
     private VehicleDataDTO request(String vin) {
-        return restTemplate.getForObject(uriBuilder(vin), VehicleDataDTO.class);
+        try {
+            log.info("Calling beachcomb requestUnpaired...");
+            return restTemplate.getForObject(uriBuilder(vin), VehicleDataDTO.class);
+        } catch (RestClientException e) {
+            log.error("Error: ", e);
+            throw new RuntimeException(e);
+        }
     }
 
     private List<VehicleDataDTO> candidates(String vin, VehicleType type) {
-        return restTemplate.exchange(uriBuilder(vin, type), HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<VehicleDataDTO>>() {
-                }).getBody();
+        try {
+            log.info("Calling beachcomb candidates...");
+            return restTemplate.exchange(uriBuilder(vin, type), HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<VehicleDataDTO>>() {
+                    }).getBody();
+        } catch (RestClientException e) {
+            log.error("Error: ", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public List<VehicleDataDTO> allData() {
-        return restTemplate.exchange(uriBuilder(), HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<VehicleDataDTO>>() {
-                }).getBody();
+        try {
+            log.info("Calling beachcomb allData...");
+            return restTemplate.exchange(uriBuilder(), HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<VehicleDataDTO>>() {
+                    }).getBody();
+        } catch (RestClientException e) {
+            log.error("Error: ", e);
+            throw new RuntimeException(e);
+        }
     }
 
 
     private List<String> getLVs(List<VehicleStatusDTO> vehicles) {
         List<String> lvs = new ArrayList<>();
         for (VehicleStatusDTO v : vehicles) {
-            if (controller.findBaseByVin(v.getVin()).getVehicleType() == VehicleType.LV)
+            if (controller.findBaseByVin(v.getVin()).getVehicleType() == VehicleType.LV) {
                 lvs.add(v.getVin());
+            }
         }
         return lvs;
     }
@@ -192,8 +221,9 @@ public class UnpairedProcessing {
     private List<String> getFVs(List<VehicleStatusDTO> vehicles) {
         List<String> fvs = new ArrayList<>();
         for (VehicleStatusDTO v : vehicles) {
-            if (controller.findBaseByVin(v.getVin()).getVehicleType() == VehicleType.FV)
+            if (controller.findBaseByVin(v.getVin()).getVehicleType() == VehicleType.FV) {
                 fvs.add(v.getVin());
+            }
         }
         return fvs;
     }

@@ -6,9 +6,11 @@ import fm.api.datafeeder.VehicleStatusDTO;
 import fm.api.inventory.VehicleType;
 import fm.service.control.mongo.controller.MongoController;
 import fm.service.control.rabbit.producer.Producer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class PairedProcessing {
 
     @Autowired
@@ -123,6 +126,12 @@ public class PairedProcessing {
     }
 
     private VehicleDataDTO request(String vin) {
-        return restTemplate.getForObject(uriBuilder(vin), VehicleDataDTO.class);
+        try {
+            log.info("Calling beachcomb requestPaired...");
+            return restTemplate.getForObject(uriBuilder(vin), VehicleDataDTO.class);
+        } catch (RestClientException e) {
+            log.error("Error: ", e);
+            throw new RuntimeException(e);
+        }
     }
 }

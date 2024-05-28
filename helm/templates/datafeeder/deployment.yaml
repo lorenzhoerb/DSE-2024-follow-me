@@ -19,4 +19,4 @@ spec:
         imagePullPolicy: IfNotPresent
         envFrom:
           - secretRef:
-              name: rabbitmq-default-user # Created by rabbitmq
+              name: rabbitmq-custom-user

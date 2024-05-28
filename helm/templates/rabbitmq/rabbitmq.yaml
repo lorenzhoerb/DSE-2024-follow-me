@@ -5,3 +5,21 @@ metadata:
   namespace: dse
 spec:
   replicas: 3 # Number of nodes in the RabbitMQ cluster
+  secretBackend:
+    externalSecret:
+      name: "rabbitmq-custom-user"
+---
+apiVersion: v1
+data:
+  default_user.conf: {{ "default_user = guest\ndefault_pass = guest\n" | b64enc }}
+  host: {{ "rabbitmq.dse.svc" | b64enc }}
+  password: {{ "guest" | b64enc }}
+  port: {{ "5672" | b64enc}}
+  provider: {{ "rabbitmq"| b64enc }}
+  type: {{ "rabbitmq"| b64enc }}
+  username: {{ "guest" | b64enc }}
+kind: Secret
+metadata:
+  name: rabbitmq-custom-user
+  namespace: dse
+type: Opaque

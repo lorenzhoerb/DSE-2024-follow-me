@@ -51,7 +51,7 @@ helm install rabbitmq-operator bitnami/rabbitmq-cluster-operator --namespace dse
 
 ```shell
 cd backend
-mvn package -DskipTests
+mvn clean package -DskipTests
 cd ..
 
 docker build -t europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/beachcomb:latest backend/beachcomb-service
@@ -75,10 +75,11 @@ To test if everything works you can check by visiting `http://localhost/`.
 
 To run Spring Boot locally do the following:
 
-Port forward mongodb: `kubectl port-forward inventory-mongodb-0 27017:27017 -n dse` (if you get an error related to 'not
-primary' try the other replicas)  
-Set the following env
-variable: `connectionString.standard=mongodb://inventory-user:inventory-pass@localhost:27017/inventory?authSource=inventory`
+Port forward mongodb: `kubectl port-forward mongodb-1 27017:27017 -n dse` (if you get an error related to 'not primary' try the other replicas).  
+Port forward rabbitmq: `kubectl port-forward rabbitmq-server-0 5672:5672 -n dse`.  
+Set env variables `username=guest` and `password=guest` (e.g. via IntelliJ's run configuration) to allow connecting to rabbitmq (required for each service).
+
+You can now start all the spring boot applications outside the cluster. The frontend should in this case also run outside the cluster.
 
 ## Deployment on GKE
 

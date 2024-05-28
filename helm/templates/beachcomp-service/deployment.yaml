@@ -23,4 +23,4 @@ spec:
           - secretRef:
               name: mongodb-beachcomb-beachcomb-user # Created by mongodb
           - secretRef:
-              name: rabbitmq-default-user # Created by rabbitmq
+              name: rabbitmq-custom-user

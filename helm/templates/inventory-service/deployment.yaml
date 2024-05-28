@@ -23,7 +23,7 @@ spec:
           - secretRef:
               name: mongodb-inventory-inventory-user # Created by mongodb
           - secretRef:
-              name: rabbitmq-default-user # Created by rabbitmq
+              name: rabbitmq-custom-user
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: testdata

@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: inventory-service
+  name: event-service
   namespace: {{ .Values.namespace }}
 spec:
   selector:
-    app.kubernetes.io/name: inventory-service
+    app.kubernetes.io/name: event-service
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 4444
+      targetPort: 4449

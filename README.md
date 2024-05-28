@@ -50,7 +50,17 @@ helm install rabbitmq-operator bitnami/rabbitmq-cluster-operator --namespace dse
 ### Build docker images
 
 ```shell
-docker build -t europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/inventory:latest inventory
+cd backend
+mvn package -DskipTests
+cd ..
+
+docker build -t europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/beachcomb:latest backend/beachcomb-service
+docker build -t europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/control:latest backend/control-service
+docker build -t europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/datafeeder:latest backend/datafeeder
+docker build -t europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/event:latest backend/event-service
+docker build -t europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/inventory:latest backend/inventory-service
+
+docker build -t europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/web:latest web
 ```
 
 ### Install helm chart
@@ -59,7 +69,7 @@ docker build -t europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/inventory:l
 helm install dse helm\
 ```
 
-To test if everything works you can check the service via `curl http://localhost/api/inventory/`.
+To test if everything works you can check the service via `curl http://localhost/inventory/`.
 
 ## Development
 
@@ -82,7 +92,13 @@ Afterward execute the above commands. You can push containers as follows:
 ```shell
 gcloud artifacts repositories create dse-repo --repository-format docker --location europe-north1
 
+docker push europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/beachcomb:latest
+docker push europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/control:latest
+docker push europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/datafeeder:latest
+docker push europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/event:latest
 docker push europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/inventory:latest
+
+docker push europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/web:latest
 ```
 
 You can then get the external ip by running:

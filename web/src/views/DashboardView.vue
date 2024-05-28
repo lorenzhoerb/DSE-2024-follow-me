@@ -28,7 +28,7 @@ import { ref, onMounted, computed, onUnmounted } from 'vue'
 import type { Ref } from 'vue'
 import VehicleListCard from '@/components/vehicle/VehicleListCard.vue'
 import MainMap from '@/components/map/MainMap.vue'
-import LogListConnected from '@/components/logsList/LogListConnected.vue'
+import LogListConnected from '@/components/logs/LogListConnected.vue'
 import { fetchAll } from '@/services/VehicleService'
 import type { VehicleInfo } from '@/types'
 

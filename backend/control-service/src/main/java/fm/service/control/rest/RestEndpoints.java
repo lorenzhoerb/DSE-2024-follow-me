@@ -8,19 +8,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:5173")
 public class RestEndpoints {
 
     @Autowired
     MongoController controller;
 
-    @GetMapping(value = "/control/status/{vin}")
+    @GetMapping(value = "status/{vin}")
     @ResponseBody
     public VehicleStatusDTO getStatus(@PathVariable("vin") String vin) {
         return controller.findByVin(vin);
     }
 
-    @GetMapping(value = "/control/status")
+    @GetMapping(value = "status")
     @ResponseBody
     public List<VehicleStatusDTO> getAll() {
         return controller.getStatusList();

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: web-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: web-service
+    spec:
+      containers:
+      - name: web
+        image: europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/web:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80

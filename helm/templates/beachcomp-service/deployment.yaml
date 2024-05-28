@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beachcomb-deployment
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: beachcomb-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: beachcomb-service
+    spec:
+      containers:
+      - name: beachcomb
+        image: europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/beachcomb:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 4442
+        envFrom:
+          - secretRef:
+              name: mongodb-beachcomb-beachcomb-user # Created by mongodb
+          - secretRef:
+              name: rabbitmq-default-user # Created by rabbitmq

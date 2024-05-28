@@ -12,6 +12,36 @@ spec:
     authentication:
       modes: ["SCRAM"]
   users:
+    - name: beachcomb-user
+      db: beachcomb
+      additionalConnectionStringConfig:
+        authSource: beachcomb
+      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+        name: beachcomb-user-password
+      roles:
+        - name: readWrite
+          db: beachcomb
+      scramCredentialsSecretName: beachcomb-scram
+    - name: control-user
+      db: control
+      additionalConnectionStringConfig:
+        authSource: control
+      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+        name: control-user-password
+      roles:
+        - name: readWrite
+          db: control
+      scramCredentialsSecretName: control-scram
+    - name: event-user
+      db: event
+      additionalConnectionStringConfig:
+        authSource: event
+      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+        name: event-user-password
+      roles:
+        - name: readWrite
+          db: event
+      scramCredentialsSecretName: event-scram
     - name: inventory-user
       db: inventory
       additionalConnectionStringConfig:
@@ -21,12 +51,39 @@ spec:
       roles:
         - name: readWrite
           db: inventory
-      scramCredentialsSecretName: my-scram
+      scramCredentialsSecretName: inventory-scram
   additionalMongodConfig:
     storage.wiredTiger.engineConfig.journalCompressor: zlib
 
 # the user credentials will be generated from this secret
 # once the credentials are generated, this secret is no longer required
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: beachcomb-user-password
+  namespace: {{ .Values.namespace }}
+type: Opaque
+stringData:
+  password: "beachcomb-pass"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: control-user-password
+  namespace: {{ .Values.namespace }}
+type: Opaque
+stringData:
+  password: "control-pass"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: event-user-password
+  namespace: {{ .Values.namespace }}
+type: Opaque
+stringData:
+  password: "event-pass"
 ---
 apiVersion: v1
 kind: Secret

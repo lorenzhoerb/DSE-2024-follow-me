@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LogList from '@/components/logsList/LogList.vue'
+import LogList from '@/components/logs/LogList.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 import type { Ref } from 'vue'
 import { fetchEvents } from '@/services/EventLogService';

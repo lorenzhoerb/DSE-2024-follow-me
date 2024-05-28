@@ -8,4 +8,4 @@ spec:
   hostname: "*"
   prefix: /api/inventory/
   service: inventory-service.{{ .Values.namespace }}
-  rewrite: ""
+  rewrite: /api/inventory/

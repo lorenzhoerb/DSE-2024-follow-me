@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datafeeder-deployment
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: datafeeder-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: datafeeder-service
+    spec:
+      containers:
+      - name: datafeeder
+        image: europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/datafeeder:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - secretRef:
+              name: rabbitmq-default-user # Created by rabbitmq

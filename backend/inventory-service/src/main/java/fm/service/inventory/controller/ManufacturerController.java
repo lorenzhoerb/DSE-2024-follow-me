@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/inventory/manufacturers")
+@RequestMapping("manufacturers")
 public class ManufacturerController {
 
     private final IManufacturerService manufacturerService;

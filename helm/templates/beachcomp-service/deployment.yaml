@@ -18,7 +18,7 @@ spec:
         image: europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/beachcomb:latest
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 4442
+        - containerPort: 8080
         envFrom:
           - secretRef:
               name: mongodb-beachcomb-beachcomb-user # Created by mongodb

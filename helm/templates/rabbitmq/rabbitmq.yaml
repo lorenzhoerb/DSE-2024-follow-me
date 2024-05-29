@@ -4,7 +4,7 @@ metadata:
   name: rabbitmq
   namespace: dse
 spec:
-  replicas: 3 # Number of nodes in the RabbitMQ cluster
+  replicas: 3
   secretBackend:
     externalSecret:
       name: "rabbitmq-custom-user"

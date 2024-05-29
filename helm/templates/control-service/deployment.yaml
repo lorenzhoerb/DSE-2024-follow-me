@@ -18,7 +18,7 @@ spec:
         image: europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/control:latest
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 4443
+        - containerPort: 8081
         envFrom:
           - secretRef:
               name: mongodb-control-control-user # Created by mongodb

@@ -18,7 +18,7 @@ spec:
         image: europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/inventory:latest
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 4444
+        - containerPort: 8083
         envFrom:
           - secretRef:
               name: mongodb-inventory-inventory-user # Created by mongodb

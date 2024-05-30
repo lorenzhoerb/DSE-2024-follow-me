@@ -18,7 +18,7 @@ spec:
         image: europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/event:latest
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 4449
+        - containerPort: 8082
         envFrom:
           - secretRef:
               name: mongodb-event-event-user # Created by mongodb

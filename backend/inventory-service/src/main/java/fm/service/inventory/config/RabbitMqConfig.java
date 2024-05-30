@@ -1,5 +1,7 @@
 package fm.service.inventory.config;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -18,9 +20,27 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    Queue queue() {
-        return new Queue("test");
+    Queue beachcombVehicleEventQueue() {
+        return new Queue("beachcomb.vehicle.evnet", true);
     }
+
+    @Bean
+    Binding beachcombVehicleEventQueueBinding() {
+        return BindingBuilder.bind(beachcombVehicleEventQueue())
+                .to(exchange()).with("event.vehicle.created");
+    }
+
+    @Bean
+    Queue controlVehicleEventQueue() {
+        return new Queue("control.vehicle.evnet", true);
+    }
+
+    @Bean
+    Binding controlVehicleEventQueueBinding() {
+        return BindingBuilder.bind(controlVehicleEventQueue())
+                .to(exchange()).with("event.vehicle.created");
+    }
+
 
     @Bean
     TopicExchange exchange() {

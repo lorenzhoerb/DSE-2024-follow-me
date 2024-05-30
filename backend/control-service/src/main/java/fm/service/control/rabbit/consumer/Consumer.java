@@ -21,7 +21,7 @@ public class Consumer implements IVehicleEventHandler {
      * @param vehicleData Information about the newly created vehicle,
      *                    including its VIN (Vehicle Identification Number) and type (FV or LV).
      */
-    @RabbitListener(queues = "#{queueInventory.name}")
+    @RabbitListener(queues = "#{controlVehicleEventQueue.name}")
     @Override
     public void handleVehicleCreated(VehicleBaseDTO vehicleData) {
         VehicleStatusDTO status = new VehicleStatusDTO();

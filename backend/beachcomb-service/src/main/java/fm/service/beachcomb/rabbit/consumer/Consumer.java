@@ -36,7 +36,7 @@ public class Consumer implements IVehicleDatafeedHandler, IVehicleEventHandler {
      * @param vehicleData Information about the newly created vehicle,
      *                    including its VIN (Vehicle Identification Number) and type (FV or LV).
      */
-    @RabbitListener(queues = "#{queueInventory.name}")
+    @RabbitListener(queues = "#{beachcombVehicleEventQueue.name}")
     @Override
     public void handleVehicleCreated(VehicleBaseDTO vehicleData) {
         controller.saveBase(vehicleData);

@@ -21,6 +21,19 @@ public class Config {
     @Value("${fromDatafeeder.key.name}")
     private String fromDatafeederKey;
 
+
+
+    @Bean
+    Queue beachcombVehicleEventQueue() {
+        return new Queue("beachcomb.vehicle.evnet", true);
+    }
+
+    @Bean
+    Binding beachcombVehicleEventQueueBinding() {
+        return BindingBuilder.bind(beachcombVehicleEventQueue())
+                .to(topicExchange()).with("event.vehicle.created");
+    }
+
     @Bean
     public Queue queueInventory() {
         return new AnonymousQueue();

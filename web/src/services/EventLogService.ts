@@ -8,7 +8,7 @@ const axiosInv = axios.create({
 export const fetchEvents = (): Promise<LogInfo[]> => {
   return new Promise((resolve, reject) => {
     axiosInv
-      .get('/events')
+      .get('')
       .then((response) => {
         const events: LogInfo[] = response.data.map((event: any) => ({
           ...event,

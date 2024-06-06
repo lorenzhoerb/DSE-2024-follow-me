@@ -1,6 +1,0 @@
-server.servlet.context-path: "/api/inventory/"
-
-spring:
-      data:
-        mongodb:
-          uri: "${connectionString.standard}"

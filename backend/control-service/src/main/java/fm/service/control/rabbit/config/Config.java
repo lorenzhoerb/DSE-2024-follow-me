@@ -21,6 +21,18 @@ public class Config {
     @Value("${fromInventory.key.name}")
     private String fromInventoryKey;
 
+
+    @Bean
+    Queue controlVehicleEventQueue() {
+        return new Queue("control.vehicle.evnet", true);
+    }
+
+    @Bean
+    Binding controlVehicleEventQueueBinding() {
+        return BindingBuilder.bind(controlVehicleEventQueue())
+                .to(topicExchange()).with("event.vehicle.created");
+    }
+
     @Bean
     public Queue queueInventory() {
         return new AnonymousQueue();

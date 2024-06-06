@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:5173")
 public class RestEndpoints {
     @Autowired
     FindNearest nearest;
@@ -28,7 +27,7 @@ public class RestEndpoints {
                     array = @ArraySchema(schema = @Schema(implementation = VehicleDataDTO.class)))})
     @ApiResponse(responseCode = "400", description = "Invalid vin supplied", content = @Content)
     @ApiResponse(responseCode = "404", description = "Candidates not found", content = @Content)
-    @GetMapping(value = "/beachcomb/{vin}")
+    @GetMapping(value = "{vin}")
     @ResponseBody
     public List<VehicleDataDTO> matching(@PathVariable("vin") String vin, @RequestParam("type") VehicleType type) {
         return nearest.findMatches(vin, type);
@@ -40,7 +39,7 @@ public class RestEndpoints {
                     schema = @Schema(implementation = VehicleDataDTO.class))})
     @ApiResponse(responseCode = "400", description = "Invalid vin supplied", content = @Content)
     @ApiResponse(responseCode = "404", description = "Data not found", content = @Content)
-    @GetMapping(value = "/beachcomb/vehicles/{vin}")
+    @GetMapping(value = "vehicles/{vin}")
     public VehicleDataDTO getVehicle(@PathVariable("vin") String vin) {
         return controller.findVehicleByVin(vin);
     }
@@ -50,7 +49,7 @@ public class RestEndpoints {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     array = @ArraySchema(schema = @Schema(implementation = VehicleDataDTO.class)))})
     @ApiResponse(responseCode = "404", description = "Data not found", content = @Content)
-    @GetMapping(value = "/beachcomb/vehicles")
+    @GetMapping(value = "vehicles")
     public List<VehicleDataDTO> getAll() {
         return controller.getVehicles();
     }

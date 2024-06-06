@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:5173")
 public class RestEndpoints {
 
     @Autowired
@@ -27,7 +26,7 @@ public class RestEndpoints {
                     schema = @Schema(implementation = VehicleStatusDTO.class))})
     @ApiResponse(responseCode = "400", description = "Invalid vin supplied", content = @Content)
     @ApiResponse(responseCode = "404", description = "Status not found", content = @Content)
-    @GetMapping(value = "/control/status/{vin}")
+    @GetMapping(value = "status/{vin}")
     @ResponseBody
     public VehicleStatusDTO getStatus(@PathVariable("vin") String vin) {
         return controller.findByVin(vin);
@@ -38,7 +37,7 @@ public class RestEndpoints {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     array = @ArraySchema(schema = @Schema(implementation = VehicleStatusDTO.class)))})
     @ApiResponse(responseCode = "404", description = "Status not found", content = @Content)
-    @GetMapping(value = "/control/status")
+    @GetMapping(value = "status")
     @ResponseBody
     public List<VehicleStatusDTO> getAll() {
         return controller.getStatusList();

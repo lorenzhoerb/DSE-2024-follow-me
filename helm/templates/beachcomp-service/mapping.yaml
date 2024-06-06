@@ -1,0 +1,11 @@
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: beachcomb-mapping
+  namespace: {{ .Values.namespace }}
+spec:
+  hostname: "*"
+  prefix: /api/beachcomb/
+  service: beachcomb-service.{{ .Values.namespace }}
+  rewrite: /api/beachcomb/

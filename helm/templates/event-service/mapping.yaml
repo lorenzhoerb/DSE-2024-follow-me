@@ -1,0 +1,11 @@
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: event-mapping
+  namespace: {{ .Values.namespace }}
+spec:
+  hostname: "*"
+  prefix: /api/events/
+  service: event-service.{{ .Values.namespace }}
+  rewrite: /api/events/

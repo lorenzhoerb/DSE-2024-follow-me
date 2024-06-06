@@ -6,7 +6,6 @@
 		<groupId>com.dse.g6</groupId>
 		<artifactId>fm</artifactId>
 		<version>1.0.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>beachcomb-service</artifactId>
 	<name>beachcomb-service</name>

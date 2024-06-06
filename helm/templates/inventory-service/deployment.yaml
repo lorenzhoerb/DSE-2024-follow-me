@@ -4,7 +4,7 @@ metadata:
   name: inventory-deployment
   namespace: {{ .Values.namespace }}
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: inventory-service
@@ -15,10 +15,15 @@ spec:
     spec:
       containers:
       - name: inventory
-        image: inventory:latest
+        image: europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/inventory:latest
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 8080
+        - containerPort: 8083
         envFrom:
           - secretRef:
-              name: inventory-mongodb-inventory-inventory-user
+              name: mongodb-inventory-inventory-user # Created by mongodb
+          - secretRef:
+              name: rabbitmq-custom-user
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: testdata

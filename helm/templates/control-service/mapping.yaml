@@ -1,0 +1,11 @@
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: control-mapping
+  namespace: {{ .Values.namespace }}
+spec:
+  hostname: "*"
+  prefix: /api/control/
+  service: control-service.{{ .Values.namespace }}
+  rewrite: /api/control/

@@ -23,12 +23,12 @@ public class Config {
 
 
     @Bean
-    Queue controlVehicleEventQueue() {
+    public Queue controlVehicleEventQueue() {
         return new Queue("control.vehicle.evnet", true);
     }
 
     @Bean
-    Binding controlVehicleEventQueueBinding() {
+    public Binding controlVehicleEventQueueBinding() {
         return BindingBuilder.bind(controlVehicleEventQueue())
                 .to(topicExchange()).with("event.vehicle.created");
     }

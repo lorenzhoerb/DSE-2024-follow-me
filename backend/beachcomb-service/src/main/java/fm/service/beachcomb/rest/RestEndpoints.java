@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,9 @@ import java.util.List;
 
 @RestController
 public class RestEndpoints {
+
+    private static final Logger logger = LoggerFactory.getLogger(RestEndpoints.class);
+
     @Autowired
     FindNearest nearest;
     @Autowired
@@ -51,6 +56,9 @@ public class RestEndpoints {
     @ApiResponse(responseCode = "404", description = "Data not found", content = @Content)
     @GetMapping(value = "vehicles")
     public List<VehicleDataDTO> getAll() {
-        return controller.getVehicles();
+        logger.info("getAll");
+        var a =  controller.getVehicles();
+        logger.info("response: {}", a);
+        return a;
     }
 }

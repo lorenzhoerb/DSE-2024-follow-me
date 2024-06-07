@@ -4,12 +4,16 @@ import fm.api.datafeeder.VehicleStatusDTO;
 import fm.api.inventory.IVehicleEventHandler;
 import fm.api.inventory.dto.VehicleBaseDTO;
 import fm.service.control.mongo.controller.MongoController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Consumer implements IVehicleEventHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
     @Autowired
     MongoController controller;
@@ -24,6 +28,7 @@ public class Consumer implements IVehicleEventHandler {
     @RabbitListener(queues = "#{controlVehicleEventQueue.name}")
     @Override
     public void handleVehicleCreated(VehicleBaseDTO vehicleData) {
+        logger.info("handleVehicleCreated({})", vehicleData);
         VehicleStatusDTO status = new VehicleStatusDTO();
         status.setVin(vehicleData.getVin());
         status.setFollowMeModeActive(false);

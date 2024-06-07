@@ -26,4 +26,4 @@ spec:
               name: rabbitmq-custom-user
         env:
           - name: BEACHCOMB_SERVICE_URL
-            value: beachcomb-service.dse.svc.cluster.local
+            value: http://beachcomb-service.dse.svc.cluster.local

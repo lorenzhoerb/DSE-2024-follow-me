@@ -43,7 +43,9 @@ public class UnpairedProcessing {
     }
 
     private void processFVs() {
+        log.info("started processFVs()");
         List<VehicleStatusDTO> vehicles = controller.getNotPaired();
+        log.info("not Paired vehicles: {}", vehicles);
         if (vehicles.isEmpty()) return;
         List<String> fvs = getFVs(vehicles);
         if (fvs.isEmpty()) return;
@@ -186,9 +188,11 @@ public class UnpairedProcessing {
     private List<VehicleDataDTO> candidates(String vin, VehicleType type) {
         try {
             log.info("Calling beachcomb candidates...");
-            return restTemplate.exchange(uriBuilder(vin, type), HttpMethod.GET, null,
+            var a = restTemplate.exchange(uriBuilder(vin, type), HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<VehicleDataDTO>>() {
                     }).getBody();
+            log.info("candidates: {}", a.stream().map(s -> s.toString()).toList());
+            return a;
         } catch (RestClientException e) {
             log.error("Error: ", e);
             throw new RuntimeException(e);
@@ -197,10 +201,11 @@ public class UnpairedProcessing {
 
     public List<VehicleDataDTO> allData() {
         try {
-            log.info("Calling beachcomb allData...");
-            return restTemplate.exchange(uriBuilder(), HttpMethod.GET, null,
+            var a = restTemplate.exchange(uriBuilder(), HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<VehicleDataDTO>>() {
                     }).getBody();
+            log.info("allData: {}", String.join(", ", a.stream().map(s -> s.toString()).toList()));
+            return a;
         } catch (RestClientException e) {
             log.error("Error: ", e);
             throw new RuntimeException(e);

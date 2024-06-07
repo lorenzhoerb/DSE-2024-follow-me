@@ -5,12 +5,16 @@ import fm.api.datafeeder.VehicleDataDTO;
 import fm.api.inventory.IVehicleEventHandler;
 import fm.api.inventory.dto.VehicleBaseDTO;
 import fm.service.beachcomb.mongo.controller.MongoController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Consumer implements IVehicleDatafeedHandler, IVehicleEventHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
     @Autowired
     MongoController controller;
@@ -26,6 +30,7 @@ public class Consumer implements IVehicleDatafeedHandler, IVehicleEventHandler {
     @RabbitListener(queues = "${fromDatafeeder.queue.name}")
     @Override
     public void handleVehicleData(VehicleDataDTO vehicleData) {
+        logger.info("handleVehicleData({})", vehicleData);
         controller.saveVehicle(vehicleData);
     }
 
@@ -39,6 +44,7 @@ public class Consumer implements IVehicleDatafeedHandler, IVehicleEventHandler {
     @RabbitListener(queues = "#{beachcombVehicleEventQueue.name}")
     @Override
     public void handleVehicleCreated(VehicleBaseDTO vehicleData) {
+        logger.info("handleVehicleCreated({})", vehicleData);
         controller.saveBase(vehicleData);
     }
 }

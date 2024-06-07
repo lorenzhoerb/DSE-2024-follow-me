@@ -3,6 +3,8 @@ package fm.service.control.rabbit.producer;
 import fm.api.control.IVehicleService;
 import fm.api.datafeeder.VehicleStatusDTO;
 import fm.service.control.rabbit.config.QueueCreator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Producer implements IVehicleService {
+
+    private static final Logger logger = LoggerFactory.getLogger(Producer.class);
 
     @Value("${exchange.name}")
     private String exchange;
@@ -31,7 +35,8 @@ public class Producer implements IVehicleService {
      */
     @Override
     public void sendStatus(String vin, VehicleStatusDTO status) {
-        creator.createQueueBind(vin);
+        logger.info("sendStatus({}, {})", vin, status);
+        //creator.createQueueBind(vin);
         rabbitTemplate.convertAndSend(exchange, "data.vehicle." + vin, status);
     }
 }

@@ -1,5 +1,6 @@
 package fm.service.control.service;
 
+import fm.api.common.EventMessageDTO;
 import fm.api.datafeeder.TargetControlDTO;
 import fm.api.datafeeder.VehicleDataDTO;
 import fm.api.datafeeder.VehicleStatusDTO;
@@ -24,6 +25,8 @@ import java.util.List;
 @Slf4j
 public class UnpairedProcessing {
 
+    @Autowired
+    EventMessageService eventMessageService;
     @Autowired
     MongoController controller;
     @Autowired
@@ -238,5 +241,21 @@ public class UnpairedProcessing {
         statusDTO.setTargetControl(targetControlDTO);
         controller.saveStatus(statusDTO);
         producer.sendStatus(fv, statusDTO);
+    }
+
+    private void sendUnpairEvent(VehicleDataDTO leading, VehicleDataDTO following, TargetControlDTO leadingTarget) {
+        log.info("Sending unpaired event to event service.");
+        String leadingVin = leading.getVin();
+        String followVin = following.getVin();
+        String message = String.format(
+                "Control Service: Unpaired Vehicles - Following Vehicle (VIN: %s) and Leading Vehicle (VIN: %s). " +
+                        "Reason: Target conditions (velocity: %.2f km/h, lane: %d) were not met. " +
+                        "Current conditions (velocity: %.2f km/h, lane: %d) were not achieved within %d seconds.",
+                followVin, leadingVin,
+                leadingTarget.getTargetVelocity(), leadingTarget.getTargetLane(),
+                following.getVelocity(), following.getLane(),
+                (repeat * sleep) / 1000
+        );
+        eventMessageService.sendEvent(new EventMessageDTO(message));
     }
 }

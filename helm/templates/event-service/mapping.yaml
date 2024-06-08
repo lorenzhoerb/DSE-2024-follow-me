@@ -9,3 +9,16 @@ spec:
   prefix: /api/events/
   service: event-service.{{ .Values.namespace }}
   rewrite: /api/events/
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: event-mapping-ws
+  namespace: {{ .Values.namespace }}
+spec:
+  hostname: "*"
+  prefix: /api/events/ws
+  service: event-service.{{ .Values.namespace }}
+  rewrite: /api/events/ws
+  allow_upgrade:
+    - websocket

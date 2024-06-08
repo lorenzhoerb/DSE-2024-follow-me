@@ -10,7 +10,7 @@ const eventLogEntries: Ref<any[]> = ref([])
 
 
 const stompClient = new Client({
-    brokerURL: 'ws://localhost:4449/ws',
+    brokerURL: 'ws://' + window.location.host + '/api/events/ws',
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,

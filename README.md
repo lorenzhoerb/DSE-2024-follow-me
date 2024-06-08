@@ -92,7 +92,7 @@ docker build -t europe-north1-docker.pkg.dev/dse24-group-09/dse-repo/web:latest 
 
 ## Testing
 
-TODO
+Each service has several functionality tests, which could be started with `mvn test` command.
 
 ## Local Deployment
 
@@ -186,4 +186,5 @@ gcloud container clusters delete dse-cluster
 
 ## API Documentations
 
-TODO
+Each service has REST API docs, which are made using swagger-ui and open-api modules. Documentation can be found for 
+each service at `http://service_address/docs`.

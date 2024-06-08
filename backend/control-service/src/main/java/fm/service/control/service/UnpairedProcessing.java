@@ -54,14 +54,15 @@ public class UnpairedProcessing {
         if (fvs.isEmpty()) return;
         for (String v : fvs) {
             List<VehicleDataDTO> candidates = candidates(v, controller.findBaseByVin(v).getVehicleType());
-            if (candidates.isEmpty()) return;
-            VehicleDataDTO following = request(v);
-            for (VehicleDataDTO vehicle : candidates) {
-                if (controller.findByVin(vehicle.getVin()).getPairedVin() == null) {
-                    if (tryMatching(vehicle, following)) {
-                        return;
-                    } else {
-                        changeStatusUnpair(vehicle.getVin(), following.getVin());
+            if (!candidates.isEmpty()) {
+                VehicleDataDTO following = request(v);
+                for (VehicleDataDTO vehicle : candidates) {
+                    if (controller.findByVin(vehicle.getVin()).getPairedVin() == null) {
+                        if (tryMatching(vehicle, following)) {
+                            return;
+                        } else {
+                            changeStatusUnpair(vehicle.getVin(), following.getVin());
+                        }
                     }
                 }
             }
@@ -75,14 +76,15 @@ public class UnpairedProcessing {
         if (lvs.isEmpty()) return;
         for (String v : lvs) {
             List<VehicleDataDTO> candidates = candidates(v, controller.findBaseByVin(v).getVehicleType());
-            if (candidates.isEmpty()) return;
-            VehicleDataDTO leading = request(v);
-            for (VehicleDataDTO vehicle : candidates) {
-                if (controller.findByVin(vehicle.getVin()).getPairedVin() == null) {
-                    if (tryMatching(leading, vehicle)) {
-                        return;
-                    } else {
-                        changeStatusUnpair(leading.getVin(), vehicle.getVin());
+            if (!candidates.isEmpty()) {
+                VehicleDataDTO leading = request(v);
+                for (VehicleDataDTO vehicle : candidates) {
+                    if (controller.findByVin(vehicle.getVin()).getPairedVin() == null) {
+                        if (tryMatching(leading, vehicle)) {
+                            return;
+                        } else {
+                            changeStatusUnpair(leading.getVin(), vehicle.getVin());
+                        }
                     }
                 }
             }

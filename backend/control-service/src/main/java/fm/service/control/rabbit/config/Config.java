@@ -34,18 +34,8 @@ public class Config {
     }
 
     @Bean
-    public Queue queueInventory() {
-        return new AnonymousQueue();
-    }
-
-    @Bean
     public TopicExchange topicExchange() {
         return new TopicExchange(exchange);
-    }
-
-    @Bean
-    public Binding bindingInventory() {
-        return BindingBuilder.bind(queueInventory()).to(topicExchange()).with(fromInventoryKey);
     }
 
     @Bean

@@ -20,30 +20,30 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    Queue beachcombVehicleEventQueue() {
+    public Queue beachcombVehicleEventQueue() {
         return new Queue("beachcomb.vehicle.evnet", true);
     }
 
     @Bean
-    Binding beachcombVehicleEventQueueBinding() {
+    public Binding beachcombVehicleEventQueueBinding() {
         return BindingBuilder.bind(beachcombVehicleEventQueue())
                 .to(exchange()).with("event.vehicle.created");
     }
 
     @Bean
-    Queue controlVehicleEventQueue() {
+    public Queue controlVehicleEventQueue() {
         return new Queue("control.vehicle.evnet", true);
     }
 
     @Bean
-    Binding controlVehicleEventQueueBinding() {
+    public Binding controlVehicleEventQueueBinding() {
         return BindingBuilder.bind(controlVehicleEventQueue())
                 .to(exchange()).with("event.vehicle.created");
     }
 
 
     @Bean
-    TopicExchange exchange() {
+    public TopicExchange exchange() {
         return new TopicExchange(props.getExchange());
     }
 

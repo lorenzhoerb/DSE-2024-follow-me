@@ -24,19 +24,14 @@ public class Config {
 
 
     @Bean
-    Queue beachcombVehicleEventQueue() {
+    public Queue beachcombVehicleEventQueue() {
         return new Queue("beachcomb.vehicle.evnet", true);
     }
 
     @Bean
-    Binding beachcombVehicleEventQueueBinding() {
+    public Binding beachcombVehicleEventQueueBinding() {
         return BindingBuilder.bind(beachcombVehicleEventQueue())
                 .to(topicExchange()).with("event.vehicle.created");
-    }
-
-    @Bean
-    public Queue queueInventory() {
-        return new AnonymousQueue();
     }
 
     @Bean
@@ -47,11 +42,6 @@ public class Config {
     @Bean
     public TopicExchange topicExchange() {
         return new TopicExchange(exchange);
-    }
-
-    @Bean
-    public Binding bindingInventory() {
-        return BindingBuilder.bind(queueInventory()).to(topicExchange()).with(fromInventoryKey);
     }
 
     @Bean

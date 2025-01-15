@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full">
     <GoogleMap
-      api-key="AIzaSyDsxhW-nKqat4HnyYSRDkJTP4SZdJoUaKI"
+      :api-key="googleMapsApiKey"
       style="width: 100%; height: 100%"
       :center="centerMain"
       :zoom="15"
@@ -72,4 +72,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   clearInterval(intervalId)
 })
+
+// Access the API key from environment variable
+
+const googleMapsApiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY
 </script>
